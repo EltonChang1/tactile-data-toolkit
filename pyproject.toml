@@ -49,8 +49,8 @@ dev = [
 tactile = "tactile_toolkit.cli:main"
 
 [project.urls]
-Homepage = "https://github.com/Notle-eltoN/tactile-data-toolkit"
-Issues = "https://github.com/Notle-eltoN/tactile-data-toolkit/issues"
+Homepage = "https://github.com/EltonChang1/tactile-data-toolkit"
+Issues = "https://github.com/EltonChang1/tactile-data-toolkit/issues"
 
 [tool.hatch.build.targets.wheel]
 packages = ["src/tactile_toolkit"]
