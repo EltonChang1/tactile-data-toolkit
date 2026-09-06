@@ -82,10 +82,14 @@ def _validate_assets(
             continue
         if path is None:
             continue
+        # For a container reference these values describe the selected member, not the outer
+        # TAR/HDF5/NPZ file. The adapter validates member metadata while enumerating; this pass
+        # still verifies that the local container exists and remains inside the adapter root.
+        member_reference = observation.data.member is not None
         integrity = verify_file(
             path,
-            sha256=observation.data.sha256,
-            size_bytes=observation.data.size_bytes,
+            sha256=None if member_reference else observation.data.sha256,
+            size_bytes=None if member_reference else observation.data.size_bytes,
         )
         for item in integrity.errors:
             report.errors.append(f"sample {sample.sample_id} observation {name}: {item}")

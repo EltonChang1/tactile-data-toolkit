@@ -91,6 +91,20 @@ The evidence-checked [dataset source catalog](docs/dataset-catalog.md) records c
 
 Contributors can use the [published-dataset extension guide](docs/adding-datasets.md) to add typed metadata, lazy adapters, verified acquisition, and network-free fixtures without redistributing third-party corpora.
 
+### Supported published datasets
+
+#### FreeTacMan (OpenDriveLab)
+
+[FreeTacMan](https://huggingface.co/datasets/OpenDriveLab/FreeTacMan) is a large robot-free visuo-tactile manipulation corpus whose synchronized demonstrations support representation and policy learning for contact-rich tasks. It contains MP4 camera streams with timestamped tool-center-point and gripper CSV trajectories, which the toolkit exposes through a revision-pinned local lazy adapter with explicit camera-role and integrity validation.
+
+#### FoTa / FoundationTactile
+
+[FoTa / FoundationTactile](https://huggingface.co/datasets/alanz-mit/FoundationTactile) is a multi-sensor, multi-task tactile image corpus designed to support transferable representation learning across heterogeneous optical sensors. It contains more than three million paired JPEG and task-specific JSON records in WebDataset TAR shards, which the toolkit streams from an extracted revision-pinned snapshot while preserving source, sensor, split, labels, and member provenance.
+
+### Dataset guides
+
+See the [FreeTacMan and FoTa guide](docs/datasets/freetacman-and-fota.md) for acquisition, validation, and runnable local examples.
+
 ## Command line
 
 ```text

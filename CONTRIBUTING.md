@@ -19,6 +19,7 @@ Python 3.11 or 3.12. The `dev` extra pulls in pytest, ruff, mypy, psutil, and to
 - `src/tactile_toolkit/dataset` — PyTorch loader
 - `src/tactile_toolkit/datasets` — published-dataset metadata, adapters, registry, and acquisition
 - `tests/` — unit and end-to-end coverage on synthetic logs
+- `examples/datasets/` — bounded, local-only published-dataset examples
 - `docs/` — architecture and schema
 
 Keep conversions streaming. A change that loads an entire image trajectory into RAM will fail the 10,000-frame memory target.

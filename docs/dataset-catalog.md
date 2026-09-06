@@ -19,8 +19,8 @@ No planned integration implies that this Apache-2.0 repository relicenses third-
 
 | Source | Verified scale and scope | Data rights and access | Proposed toolkit support |
 | --- | --- | --- | --- |
-| FreeTacMan | More than 3 million paired wrist/tactile frames and more than 10,000 trajectories over 50 manipulation tasks | MIT-licensed Hugging Face data; 50.3 GB hosted snapshot | Planned adapter |
-| FoTa / FoundationTactile | 3,083,452 images from 13 camera-based tactile sensors and 11 tasks | MIT-licensed Hugging Face data; 397 GB hosted snapshot | Planned adapter |
+| FreeTacMan | More than 3 million paired wrist/tactile frames and more than 10,000 trajectories over 50 described manipulation tasks | MIT-licensed Hugging Face data; 50.3 GB hosted snapshot with 46 task directories | C3 local lazy adapter |
+| FoTa / FoundationTactile | 3,083,452 images from 13 camera-based tactile sensors and 11 tasks | MIT-licensed Hugging Face data; 397 GB hosted snapshot | C3 streaming local adapter |
 | Tac2Pose | GelSlim 3.0 observations, object meshes, and ground-truth poses for 20 objects | Paper says data are on the project site, but the files and data license could not be confirmed | Catalog pending terms, then local adapter |
 | MIT GelSight research datasets | Several study-specific resources for hardness, force/shear, and slip rather than one unified dataset | Availability and terms vary by study | Catalog pending terms |
 | Touch100k | Approximately 100,000 aligned touch, vision, and multi-granularity language examples | Google Drive distribution; CC BY-NC 4.0 data | Planned local adapter |
@@ -42,9 +42,9 @@ No planned integration implies that this Apache-2.0 repository relicenses third-
 - **Citation:** *FreeTacMan: Robot-free Visuo-Tactile Data Collection System for Contact-rich Manipulation* (arXiv:2506.01941; accepted to ICRA 2026 according to the project page).
 - **Provenance and contents:** OpenDriveLab reports more than 3 million synchronized wrist-camera/tactile-camera image pairs and more than 10,000 trajectories across 50 contact-rich manipulation tasks. Each task directory contains MP4 video and timestamped trajectories with tool-center-point position, Euler angles, quaternion, and gripper distance.
 - **Sensors, modalities, and labels:** The rig records a wrist camera, a vision-based tactile sensor, and robot-independent pose/gripper state. Labels are task identity and time-aligned end-effector state rather than a single classification target.
-- **Packaging, revision, and size:** The Hugging Face repository is approximately 50.3 GB and presents task-specific archives with MP4 and trajectory files; the verified snapshot was revision `030316fb41d6fa1e58cccb4bbe0f6fddbb932671`. Its mutable usage counter showed 9,560 downloads in the preceding month at verification time.
+- **Packaging, revision, and size:** The Hugging Face repository is approximately 50.3 GB and presents task directories with MP4 and trajectory files; the verified snapshot was revision `030316fb41d6fa1e58cccb4bbe0f6fddbb932671`. The pinned snapshot currently exposes 46 task directories even though the paper and card describe 50 tasks, camera filename capitalization varies, and its mutable usage counter showed 9,560 downloads in the preceding month at verification time.
 - **Rights and constraints:** The Hugging Face dataset declares MIT; the official code repository declares Apache-2.0. Tests must use synthetic metadata/video fixtures and must not fetch the complete hosted snapshot.
-- **Proposed support:** Implement a Hugging Face acquisition manifest plus a lazy MP4/trajectory adapter, synchronization validation, and conversion to the normalized tactile trajectory model.
+- **Implemented support:** The revision-pinned Hugging Face source requires explicit confirmation before downloading, and a local adapter lazily exposes camera MP4 references while parsing and validating the complete TCP/gripper CSV trajectory. This is C3 loadable support rather than conversion: it preserves missing third views and configurable camera roles without fabricating force, contact, calibration, or a 50-task manifest.
 
 ### FoTa / FoundationTactile
 
@@ -52,9 +52,9 @@ No planned integration implies that this Apache-2.0 repository relicenses third-
 - **Citation:** *T3: Transferable Tactile Transformers* (arXiv:2406.13640).
 - **Provenance and contents:** The release aggregates 3,083,452 tactile images from 13 camera-based tactile sensors spanning 11 tasks. It normalizes previously separate sources into a common task-oriented corpus for representation learning rather than claiming all examples were collected under one protocol.
 - **Sensors, modalities, and labels:** RGB tactile images come from 13 optical tactile sensor designs; JSON sidecars carry task-specific labels. Sensor and source-dataset identity must be retained because optics, geometry, sampling, and label semantics differ materially.
-- **Packaging, revision, and size:** The release is approximately 397 GB and uses WebDataset-style split TAR shards, each sample pairing a JPEG image with a task-specific JSON object; train/validation count files are also published. The verified Hugging Face revision was `e1a16123575eb26e789cf0129ced6f3ba081f2ed`, and the viewer cannot currently render the nested split archives, so adapters cannot depend on viewer-generated Parquet.
+- **Packaging, revision, and size:** The hosted data payload is reported as approximately 397 GB and contains WebDataset-style split TAR shards after reassembly, each sample pairing a JPEG image with a task-specific JSON object; train/validation count files are also published. The verified Hugging Face revision was `e1a16123575eb26e789cf0129ced6f3ba081f2ed`, but the hosted data are 24 split ZIP volumes plus the final ZIP segment and the viewer cannot render them, so all volumes must be reassembled before shard-level access and adapters cannot depend on viewer-generated Parquet.
 - **Rights and constraints:** The dataset card declares MIT. Its usage counter showed 2,124 downloads in the preceding month at verification time, and tests must select tiny explicit shards or local fixtures rather than downloading the corpus.
-- **Proposed support:** Implement shard discovery, streaming JPEG/JSON decoding, task-aware schema normalization, revision pinning, and provenance that identifies the contributing sensor and original dataset.
+- **Implemented support:** The local adapter discovers both official `data-*.tar` output names and the dataset-card `data_*.tar` spelling, streams sequential JPEG/JSON pairs without image decoding or extraction, and preserves arbitrary task labels plus source/sensor/split/member provenance. This is C3 loadable support rather than conversion because the aggregate's labels are intentionally heterogeneous and the current schema cannot represent every constituent task without coercion.
 
 ### Tac2Pose and MIT GelSight research datasets
 

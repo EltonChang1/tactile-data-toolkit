@@ -17,6 +17,19 @@ from tactile_toolkit.datasets.errors import (
     DatasetUnavailableError,
     DatasetValidationError,
 )
+from tactile_toolkit.datasets.foundation_tactile import (
+    FOUNDATION_TACTILE_METADATA,
+    FOUNDATION_TACTILE_REVISION,
+    FOUNDATION_TACTILE_SOURCE,
+    FoundationTactileAdapter,
+)
+from tactile_toolkit.datasets.freetacman import (
+    FREETACMAN_METADATA,
+    FREETACMAN_REVISION,
+    FREETACMAN_SOURCE,
+    FreeTacManAdapter,
+)
+from tactile_toolkit.datasets.huggingface import HuggingFaceSnapshot
 from tactile_toolkit.datasets.metadata import (
     DATASET_METADATA_VERSION,
     AccessKind,
@@ -43,6 +56,12 @@ from tactile_toolkit.datasets.validation import DatasetValidationReport, validat
 __all__ = [
     "DATASETS",
     "DATASET_METADATA_VERSION",
+    "FOUNDATION_TACTILE_METADATA",
+    "FOUNDATION_TACTILE_REVISION",
+    "FOUNDATION_TACTILE_SOURCE",
+    "FREETACMAN_METADATA",
+    "FREETACMAN_REVISION",
+    "FREETACMAN_SOURCE",
     "AccessKind",
     "AccessSource",
     "Citation",
@@ -58,6 +77,9 @@ __all__ = [
     "DatasetUnavailableError",
     "DatasetValidationError",
     "DatasetValidationReport",
+    "FoundationTactileAdapter",
+    "FreeTacManAdapter",
+    "HuggingFaceSnapshot",
     "IntegrityReport",
     "LicenseInfo",
     "ProvenanceInfo",

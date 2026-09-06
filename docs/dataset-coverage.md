@@ -1,6 +1,6 @@
 # Dataset architecture and compatibility matrix
 
-This document audits the repository at Step 02 of the tactile-library expansion and translates the verified [source catalog](dataset-catalog.md) into an implementation plan. It describes real support rather than treating a documented URL, a compatible file extension, or a manually converted file as an integrated dataset.
+This document began as the Step 02 architecture audit and now tracks implemented coverage against the verified [source catalog](dataset-catalog.md). It describes real support rather than treating a documented URL, a compatible file extension, or a manually converted file as an integrated dataset.
 
 ## Architecture audit
 
@@ -49,14 +49,14 @@ official or user-provided dataset
 | C4 — convertible | Supported source content can be validated and converted to a documented toolkit output without invented fields. |
 | C5 — benchmark-ready | Canonical splits/metrics and leakage protections are validated for comparable evaluation. |
 
-All named sources are at C1 after this step; the generic CSV/NPY/NPZ reader does not raise that grade because it has no knowledge of their manifests, semantics, terms, or citations. “Target” below is the highest justified goal, not a promise that every native field maps into the current calibrated trajectory schema.
+FreeTacMan and FoTa reached C3 in Step 04, while the other required sources remain at C1 until their scheduled integration steps; the generic CSV/NPY/NPZ reader does not raise a grade because it has no knowledge of a published dataset's manifests, semantics, terms, or citations. “Target” below is the highest justified goal, not a promise that every native field maps into the current calibrated trajectory schema.
 
 ## Required-source compatibility matrix
 
 | Source | Native unit and packaging | Normalized sample mapping | Access constraint | Current | Target and scheduled work |
 | --- | --- | --- | --- | --- | --- |
-| FreeTacMan | Task archives containing wrist/tactile MP4 and timestamped trajectory files | Trajectory; vision-tactile and scene vision asset references plus pose and gripper sequences, grouped by trajectory | 50.3 GB; avoid corpus download in tests | C1 | C3 in Step 04; C4 only with validated calibration or a raw-image output path |
-| FoTa / FoundationTactile | WebDataset TAR shards with JPEG/JSON members | Frame; lazy vision-tactile image, sensor/source identity, task-specific labels, source group | 397 GB; stream selected shards | C1 | C3 in Step 04; C4 only for compatible tasks |
+| FreeTacMan | Task directories containing wrist/tactile MP4 and timestamped trajectory files | Trajectory; lazy camera assets plus validated pose and gripper arrays, grouped by demonstration | 50.3 GB; pinned snapshot currently has 46 task directories versus 50 described | C3 | Local lazy adapter implemented in Step 04; C4 only with validated calibration or a raw-image output path |
+| FoTa / FoundationTactile | Multi-volume ZIP containing WebDataset TAR shards with JPEG/JSON members | Frame; lazy TAR-member image, source/sensor identity, arbitrary task labels, and source group when declared | 397 GB; all ZIP volumes precede shard access | C3 | Streaming local adapter implemented in Step 04; C4 only for compatible task-specific labels |
 | Tac2Pose | GelSlim images, contact masks, mesh/contact rendering, and pose labels; live manifest unavailable | Frame or sequence; vision-tactile observation, pose, object/group identity, mesh reference | Data files and terms unverified | C1 | C3 local adapter in Step 05 only if files/terms can be confirmed |
 | MIT GelSight study datasets | Study-specific hardness, force/shear, or slip resources | Sequence; vision-tactile plus study-specific force, slip, or material labels | No unified package or license | C1 | C2 child records in Step 05; loaders only for qualified releases |
 | Touch100k | Touch/vision image directories and JSONL language manifest | Frame; lazy GelSight touch and RGB vision plus phrase/sentence language and object grouping | CC BY-NC 4.0; Google Drive; no stable revision | C1 | C3 local adapter in Step 05 |
@@ -74,4 +74,4 @@ All named sources are at C1 after this step; the generic CSV/NPY/NPZ reader does
 
 The normalized model intentionally carries more modalities than Open-Tactile-Schema 0.1. Existing converters can map timestamps, tactile RGB, calibrated contact/force, wrench, and pose into the schema; scene vision, language, audio/vibration, temperature, IMU, dataset labels, multiple clocks, and external assets require explicit adapter decisions or later schema fields.
 
-This avoids two unsafe shortcuts: synthesizing absent force/contact values merely to satisfy required fields, and placing opaque dataset semantics into unvalidated `extra` dictionaries. Step 03 supplies typed metadata, adapter contracts, a registry, bounded validation, and explicit acquisition around this boundary, while dataset-specific conversions in Steps 04–07 will declare exactly which fields they preserve, derive, or cannot convert.
+This avoids two unsafe shortcuts: synthesizing absent force/contact values merely to satisfy required fields, and placing opaque dataset semantics into unvalidated `extra` dictionaries. Step 03 supplies typed metadata, adapter contracts, a registry, bounded validation, and explicit acquisition around this boundary, while the dataset integrations in Steps 04–07 declare exactly which fields they preserve, derive, or cannot convert.
