@@ -87,7 +87,7 @@ Architecture notes live in [docs/architecture.md](docs/architecture.md).
 
 ## Dataset ecosystem
 
-The evidence-checked [dataset source catalog](docs/dataset-catalog.md) records canonical sources, licenses, formats, access constraints, and proposed support levels for the tactile libraries covered by this project.
+The evidence-checked [dataset source catalog](docs/dataset-catalog.md) records canonical sources, licenses, formats, access constraints, and proposed support levels for the tactile libraries covered by this project. The [compatibility matrix](docs/dataset-coverage.md) distinguishes catalog, loading, conversion, and benchmark support while documenting how heterogeneous source data map into the toolkit.
 
 ## Command line
 
