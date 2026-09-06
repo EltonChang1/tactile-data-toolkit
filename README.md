@@ -101,9 +101,23 @@ Contributors can use the [published-dataset extension guide](docs/adding-dataset
 
 [FoTa / FoundationTactile](https://huggingface.co/datasets/alanz-mit/FoundationTactile) is a multi-sensor, multi-task tactile image corpus designed to support transferable representation learning across heterogeneous optical sensors. It contains more than three million paired JPEG and task-specific JSON records in WebDataset TAR shards, which the toolkit streams from an extracted revision-pinned snapshot while preserving source, sensor, split, labels, and member provenance.
 
+#### Tac2Pose
+
+[Tac2Pose](https://arxiv.org/abs/2204.11701) is an MIT tactile pose-estimation study using GelSlim 3.0 observations and known object geometry to localize 20 real objects from first contact. It describes paired tactile images, calibrated poses, contact renderings, meshes, and calibration touches, which the toolkit exposes as an evidence-backed C2 metadata record because no active official manifest or reusable data terms could be verified.
+
+#### MIT GelSight research datasets
+
+[MIT GelSight research datasets](https://people.csail.mit.edu/yuan_wz/hardness-estimation.htm) are separate study resources for hardness, marker-based force and shear, and slip detection rather than one uniformly packaged corpus. They contain study-specific GelSight image sequences and experimental labels where released, which the toolkit exposes through an umbrella plus three C2 child records while withholding loaders where files or data terms are missing.
+
+#### Touch100k
+
+[Touch100k](https://cocacola-lab.github.io/Touch100k/) is a touch-language-vision corpus designed to align GelSight representations with generated and human-corrected tactile descriptions at two levels of detail. It contains paired touch and scene JPEGs with `img`, `sentence_desc`, and `phrase_desc` JSON-lines records, which the toolkit loads lazily from a user-obtained local copy under CC BY-NC 4.0 while flagging that the current official Drive release is partial.
+
 ### Dataset guides
 
 See the [FreeTacMan and FoTa guide](docs/datasets/freetacman-and-fota.md) for acquisition, validation, and runnable local examples.
+
+See the [Tac2Pose, MIT GelSight, and Touch100k guide](docs/datasets/tac2pose-gelsight-touch100k.md) for honest discovery records, noncommercial terms, local layout, validation, and a runnable Touch100k example.
 
 ## Command line
 

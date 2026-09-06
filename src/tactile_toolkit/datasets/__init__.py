@@ -41,6 +41,13 @@ from tactile_toolkit.datasets.metadata import (
     SupportLevel,
     validate_metadata,
 )
+from tactile_toolkit.datasets.mit_gelsight import (
+    MIT_GELSIGHT_DATASETS_METADATA,
+    MIT_GELSIGHT_FORCE_SHEAR_SLIP_METADATA,
+    MIT_GELSIGHT_HARDNESS_METADATA,
+    MIT_GELSIGHT_NEURAL_SLIP_METADATA,
+    TAC2POSE_METADATA,
+)
 from tactile_toolkit.datasets.registry import (
     DATASETS,
     DatasetRegistry,
@@ -50,6 +57,12 @@ from tactile_toolkit.datasets.registry import (
     list_datasets,
     open_dataset,
     register_dataset,
+)
+from tactile_toolkit.datasets.touch100k import (
+    TOUCH100K_DATA_URL,
+    TOUCH100K_METADATA,
+    TOUCH100K_SCHEMA_REVISION,
+    Touch100kAdapter,
 )
 from tactile_toolkit.datasets.validation import DatasetValidationReport, validate_adapter
 
@@ -62,6 +75,14 @@ __all__ = [
     "FREETACMAN_METADATA",
     "FREETACMAN_REVISION",
     "FREETACMAN_SOURCE",
+    "MIT_GELSIGHT_DATASETS_METADATA",
+    "MIT_GELSIGHT_FORCE_SHEAR_SLIP_METADATA",
+    "MIT_GELSIGHT_HARDNESS_METADATA",
+    "MIT_GELSIGHT_NEURAL_SLIP_METADATA",
+    "TAC2POSE_METADATA",
+    "TOUCH100K_DATA_URL",
+    "TOUCH100K_METADATA",
+    "TOUCH100K_SCHEMA_REVISION",
     "AccessKind",
     "AccessSource",
     "Citation",
@@ -85,6 +106,7 @@ __all__ = [
     "ProvenanceInfo",
     "RegistryEntry",
     "SupportLevel",
+    "Touch100kAdapter",
     "dataset_adapter",
     "default_cache_dir",
     "get_dataset_metadata",
