@@ -85,6 +85,10 @@ MCAP / bag / CSV  ->  modality resolve  ->  time align  ->  quality gate
 
 Architecture notes live in [docs/architecture.md](docs/architecture.md).
 
+## Dataset ecosystem
+
+The evidence-checked [dataset source catalog](docs/dataset-catalog.md) records canonical sources, licenses, formats, access constraints, and proposed support levels for the tactile libraries covered by this project.
+
 ## Command line
 
 ```text
