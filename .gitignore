@@ -30,7 +30,7 @@ htmlcov/
 *.mcap
 *.bag
 *.db3
-datasets/
+/datasets/
 outputs/
 bench_results/
 

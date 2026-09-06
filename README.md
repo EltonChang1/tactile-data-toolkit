@@ -89,6 +89,8 @@ Architecture notes live in [docs/architecture.md](docs/architecture.md).
 
 The evidence-checked [dataset source catalog](docs/dataset-catalog.md) records canonical sources, licenses, formats, access constraints, and proposed support levels for the tactile libraries covered by this project. The [compatibility matrix](docs/dataset-coverage.md) distinguishes catalog, loading, conversion, and benchmark support while documenting how heterogeneous source data map into the toolkit.
 
+Contributors can use the [published-dataset extension guide](docs/adding-datasets.md) to add typed metadata, lazy adapters, verified acquisition, and network-free fixtures without redistributing third-party corpora.
+
 ## Command line
 
 ```text

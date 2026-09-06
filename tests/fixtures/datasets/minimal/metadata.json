@@ -1,0 +1,54 @@
+{
+  "schema_version": "tactile-dataset-metadata/0.1",
+  "dataset_id": "minimal-touch",
+  "name": "Minimal Touch Fixture",
+  "description": "A tiny local pressure fixture used to test adapter contracts without network access.",
+  "homepage": "https://example.invalid/minimal-touch",
+  "version": "1.0",
+  "revision": "fixture-1",
+  "provenance": {
+    "publisher": "Tactile Data Toolkit contributors",
+    "source_url": "https://example.invalid/minimal-touch",
+    "creators": ["Tactile Data Toolkit contributors"],
+    "institutions": [],
+    "derived_from": [],
+    "notes": "Generated solely for network-free tests."
+  },
+  "license": {
+    "name": "CC0 1.0",
+    "spdx_id": "CC0-1.0",
+    "url": "https://creativecommons.org/publicdomain/zero/1.0/",
+    "allows_redistribution": true,
+    "allows_commercial_use": true,
+    "requires_attribution": false,
+    "notes": "Synthetic test fixture; not a published research dataset."
+  },
+  "citations": [
+    {
+      "title": "Tactile Data Toolkit minimal fixture",
+      "url": "https://example.invalid/minimal-touch",
+      "authors": ["Tactile Data Toolkit contributors"],
+      "year": 2026,
+      "doi": null,
+      "bibtex": null
+    }
+  ],
+  "access": [
+    {
+      "kind": "manual",
+      "url": "https://example.invalid/minimal-touch",
+      "requires_authentication": false,
+      "requires_acceptance": false,
+      "notes": "The fixture is shipped only in the source test tree."
+    }
+  ],
+  "modalities": ["pressure"],
+  "sensors": ["Synthetic 2x2 taxel"],
+  "tasks": ["texture classification"],
+  "formats": ["csv", "jsonl"],
+  "support_level": "loadable",
+  "approximate_size_bytes": 256,
+  "checksums": {},
+  "limitations": ["Synthetic values are not physically calibrated."],
+  "aliases": ["minimal", "fixture-touch"]
+}

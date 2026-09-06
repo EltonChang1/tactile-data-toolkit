@@ -19,14 +19,14 @@ official or user-provided dataset
 
 | Area | Existing capability | Gap exposed by the catalog | Scoped response |
 | --- | --- | --- | --- |
-| Input dispatch | Local path and file-suffix reader registry | Dataset directories, archives, manifests, gated hubs, and multi-file samples cannot be identified reliably by suffix | Add dataset adapters and a registry in Step 03; do not overload the log-reader registry |
+| Input dispatch | Local path and file-suffix reader registry | Dataset directories, archives, manifests, gated hubs, and multi-file samples cannot be identified reliably by suffix | Use the separate dataset adapter registry implemented in Step 03; do not overload the log-reader registry |
 | Sample model | `Stream` and `TactileChunk` require materialized NumPy arrays with a shared time axis | Static image/label pairs, language, independent sensor clocks, external media, and task-specific labels do not fit | Introduce `TactileSample`, `TactileObservation`, and `AssetReference` before conversion |
 | Modalities | Vision-tactile, taxel, wrench, pose, and joint state | RGB vision, language, vibration, thermal, pressure, IMU, and audio are present in required sources | Extend the modality vocabulary without changing existing schema requirements |
 | Temporal structure | One tactile master trajectory with aligned auxiliary arrays | Corpora contain independent frames, short sequences, trials, and robot trajectories | Record `frame`, `sequence`, or `trajectory` explicitly and keep per-observation timing |
-| Dataset semantics | Free-form `DatasetInfo.source`, `task`, and `extra` dictionaries | No normalized dataset identity, revision, license, citation, split, or leakage group | Preserve sample/task/group fields now; implement the dataset metadata schema in Step 03 |
-| Acquisition | None | Huge, gated, noncommercial, redirected, and revisioned downloads | Implement opt-in acquisition, cache, resume, and integrity behavior in Step 03; never download corpora in tests |
+| Dataset semantics | Free-form `DatasetInfo.source`, `task`, and `extra` dictionaries | No normalized dataset identity, revision, license, citation, split, or leakage group | Use the versioned `DatasetMetadata` schema and sample/task/group fields implemented in Steps 02–03 |
+| Acquisition | None | Huge, gated, noncommercial, redirected, and revisioned downloads | Use Step 03's explicit cache/resume/integrity utility only for ordinary HTTP(S); preserve official flows for gated sources |
 | Multi-sensor data | One calibrated tactile master per pipeline invocation | FoTa and TacVerse require sensor identity; some trajectories contain multiple fingertips | Preserve a sensor on every observation; design multi-sensor conversion after adapters expose real fixtures |
-| Validation | Required calibrated schema fields, shapes, dtypes, and dimensions | It cannot validate native manifests, paired assets, task labels, or license provenance | Keep output-schema validation unchanged and add adapter/metadata validation in Step 03 |
+| Validation | Required calibrated schema fields, shapes, dtypes, and dimensions | It cannot validate native manifests, paired assets, task labels, or license provenance | Keep output-schema validation unchanged and use Step 03's bounded adapter, metadata, split, path, size, and checksum validation |
 | Training access | Frame/window access to toolkit-produced Zarr | No direct lazy access to native published datasets | Let adapters yield normalized samples; add training bridges only where formats and terms justify them |
 
 ### Deliberate boundaries
@@ -74,4 +74,4 @@ All named sources are at C1 after this step; the generic CSV/NPY/NPZ reader does
 
 The normalized model intentionally carries more modalities than Open-Tactile-Schema 0.1. Existing converters can map timestamps, tactile RGB, calibrated contact/force, wrench, and pose into the schema; scene vision, language, audio/vibration, temperature, IMU, dataset labels, multiple clocks, and external assets require explicit adapter decisions or later schema fields.
 
-This avoids two unsafe shortcuts: synthesizing absent force/contact values merely to satisfy required fields, and placing opaque dataset semantics into unvalidated `extra` dictionaries. Step 03 will build typed dataset metadata and adapter contracts around this boundary, while dataset-specific conversions in Steps 04–07 will declare exactly which fields they preserve, derive, or cannot convert.
+This avoids two unsafe shortcuts: synthesizing absent force/contact values merely to satisfy required fields, and placing opaque dataset semantics into unvalidated `extra` dictionaries. Step 03 supplies typed metadata, adapter contracts, a registry, bounded validation, and explicit acquisition around this boundary, while dataset-specific conversions in Steps 04–07 will declare exactly which fields they preserve, derive, or cannot convert.
