@@ -175,9 +175,17 @@ class FoundationTactileAdapter(DatasetAdapter):
         candidates: list[Path] = []
         if root.name in requested and self._shards(root):
             candidates.append(root)
-        for path in root.rglob("*"):
-            if path.is_dir() and path.name in requested and self._shards(path):
-                candidates.append(path)
+        for split_name in requested:
+            split_dir = root / split_name
+            if split_dir.is_dir() and self._shards(split_dir):
+                candidates.append(split_dir)
+        for source_dir in root.iterdir():
+            if not source_dir.is_dir() or source_dir.name.startswith("."):
+                continue
+            for split_name in requested:
+                split_dir = source_dir / split_name
+                if split_dir.is_dir() and self._shards(split_dir):
+                    candidates.append(split_dir)
         selected = []
         for path in sorted(set(candidates)):
             source = path.parent.name
