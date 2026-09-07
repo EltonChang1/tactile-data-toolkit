@@ -91,6 +91,8 @@ The evidence-checked [dataset source catalog](docs/dataset-catalog.md) records c
 
 The [discovered dataset candidate inventory](docs/discovered-dataset-candidates.md) records additional primary-source leads, license confidence, adoption evidence, access cost, overlap, and likely integration effort without implying toolkit support.
 
+The [Step 10 qualification record](docs/discovered-dataset-shortlist.md) selects a bounded implementation shortlist and records why every other candidate is deferred or rejected from the current program.
+
 Contributors can use the [published-dataset extension guide](docs/adding-datasets.md) to add typed metadata, lazy adapters, verified acquisition, and network-free fixtures without redistributing third-party corpora.
 
 ### Discover and inspect a first sample

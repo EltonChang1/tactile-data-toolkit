@@ -2,8 +2,8 @@
 
 This Step 09 inventory records additional tactile and haptics datasets found through
 credited primary sources; it is research input, not a claim that the toolkit supports or
-endorses any candidate. Step 10 must independently decide whether each release has terms,
-access, technical value, and maintenance cost suitable for integration.
+endorses any candidate. The [Step 10 qualification record](discovered-dataset-shortlist.md)
+applies legal, access, technical-value, and maintenance gates to these leads.
 
 Evidence was checked on **2026-09-06 America/Los_Angeles** against official project or
 institution pages, original papers, publisher repositories, and project-linked source-code
@@ -447,9 +447,10 @@ and storage values are likewise service-reported snapshots rather than lifetime 
 - **Step 10 questions:** Obtain explicit reuse terms for data, models, and annotations; determine
   whether 1.5 supersedes the original; and compare unique labels with existing language adapters.
 
-## Step 10 handoff
+## Step 10 qualification inputs
 
-Step 10 should apply a documented gate rather than treating the effort labels above as a ranking.
+The [Step 10 decision record](discovered-dataset-shortlist.md) applies a documented gate rather
+than treating the effort labels above as a ranking.
 At minimum, a shortlisted release should have unambiguous artifact-level terms, an authoritative
 and reachable acquisition path, enough native schema evidence to avoid fabricated fields, a
 clear benefit beyond current toolkit coverage, a leakage-safe grouping strategy, and a realistic
