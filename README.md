@@ -91,7 +91,24 @@ The evidence-checked [dataset source catalog](docs/dataset-catalog.md) records c
 
 Contributors can use the [published-dataset extension guide](docs/adding-datasets.md) to add typed metadata, lazy adapters, verified acquisition, and network-free fixtures without redistributing third-party corpora.
 
-### Supported published datasets
+### Discover and inspect a first sample
+
+List every dataset, collection, and reference index together with its support level and adapter availability:
+
+```bash
+uv run python examples/datasets/first_sample.py --list
+```
+
+Then inspect one normalized sample from a local release without loading the full corpus; this repository includes a tiny Touch100k-compatible fixture for a network-free smoke test:
+
+```bash
+uv run python examples/datasets/first_sample.py \
+  touch100k tests/fixtures/datasets/touch100k --split train
+```
+
+The command prints dataset provenance, license, task, labels, grouping, modalities, and lazy asset or array shapes as JSON. See the [published-data quickstart](docs/datasets/quickstart.md) before using restricted, gated, or pickle-backed sources.
+
+### Published datasets and reference sources
 
 #### FreeTacMan (OpenDriveLab)
 
@@ -103,7 +120,7 @@ Contributors can use the [published-dataset extension guide](docs/adding-dataset
 
 #### Tac2Pose
 
-[Tac2Pose](https://arxiv.org/abs/2204.11701) is an MIT tactile pose-estimation study using GelSlim 3.0 observations and known object geometry to localize 20 real objects from first contact. It describes paired tactile images, calibrated poses, contact renderings, meshes, and calibration touches, which the toolkit exposes as an evidence-backed C2 metadata record because no active official manifest or reusable data terms could be verified.
+[Tac2Pose](https://arxiv.org/abs/2204.11701) is an MIT tactile pose-estimation study using GelSlim 3.0 observations and known object geometry to localize 20 real objects from first contact. It contains study-described paired tactile images, calibrated poses, contact renderings, meshes, and calibration touches, which the toolkit exposes as an evidence-backed C2 metadata record because no active official manifest or reusable data terms could be verified.
 
 #### MIT GelSight research datasets
 
@@ -145,6 +162,10 @@ Contributors can use the [published-dataset extension guide](docs/adding-dataset
 
 [Multimodal Tactile Texture Dataset](https://data.mendeley.com/datasets/n666tk4mw9/1) is a CC BY 4.0 pressure-and-IMU corpus for classifying 12 surfaces explored at the artifact-verified speeds of 30, 35, and 40 mm/s. It contains paired barometer and nine-axis IMU pickle trials, which the toolkit acquires only after explicit 3.83 GB confirmation and publisher SHA-256 verification and loads at C3 from an extracted trusted copy without duplicating derived axis files.
 
+#### Awesome-Touch
+
+[Awesome-Touch](https://github.com/linchangyi1/Awesome-Touch) is a popular community-maintained index that makes tactile sensors, research, software, datasets, hardware, products, and laboratories easier to discover. It contains Markdown links rather than tactile samples, which the toolkit exposes as a revision-pinned C2 `reference_index` record whose MIT license never overrides the independent terms of linked resources.
+
 ### Dataset guides
 
 See the [FreeTacMan and FoTa guide](docs/datasets/freetacman-and-fota.md) for acquisition, validation, and runnable local examples.
@@ -154,6 +175,8 @@ See the [Tac2Pose, MIT GelSight, and Touch100k guide](docs/datasets/tac2pose-gel
 See the [TVL, TacBench, TacVerse, OAHD, and CLAMP guide](docs/datasets/tvl-tacbench-tacverse-oahd-clamp.md) for access boundaries, pinned releases, guarded serialization, local layouts, and runnable examples.
 
 See the [LMT, Penn HaTT, and Mendeley tactile textures guide](docs/datasets/lmt-hatt-mendeley.md) for release boundaries, licensing, guarded local loading, verified acquisition, layouts, and runnable examples.
+
+See the [published-data quickstart](docs/datasets/quickstart.md) for resource discovery, lawful acquisition boundaries, bounded validation, and a common install-to-first-sample workflow.
 
 ## Command line
 

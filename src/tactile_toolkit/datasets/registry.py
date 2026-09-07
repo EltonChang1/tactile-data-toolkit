@@ -13,7 +13,12 @@ from tactile_toolkit.datasets.errors import (
     DatasetNotFoundError,
     DatasetUnavailableError,
 )
-from tactile_toolkit.datasets.metadata import DatasetMetadata, SupportLevel, validate_metadata
+from tactile_toolkit.datasets.metadata import (
+    DatasetMetadata,
+    ResourceKind,
+    SupportLevel,
+    validate_metadata,
+)
 
 AdapterFactory = Callable[..., DatasetAdapter]
 AdapterType = TypeVar("AdapterType", bound=type[DatasetAdapter])
@@ -94,8 +99,9 @@ class DatasetRegistry:
         if entry.factory is None:
             sources = ", ".join(source.url for source in entry.metadata.access)
             raise DatasetUnavailableError(
-                f"{entry.metadata.name} is {entry.metadata.support_level.value} but has no "
-                f"adapter; official access: {sources}"
+                f"{entry.metadata.name} is a {entry.metadata.resource_kind.value} with "
+                f"{entry.metadata.support_level.value} support and has no adapter; "
+                f"official access: {sources}"
             )
         adapter = entry.factory(**kwargs)
         if not isinstance(adapter, DatasetAdapter):
@@ -110,12 +116,20 @@ class DatasetRegistry:
             )
         return adapter
 
-    def list(self, *, minimum_support: SupportLevel | str | None = None) -> list[DatasetMetadata]:
-        """List canonical metadata, optionally filtered by capability grade."""
+    def list(
+        self,
+        *,
+        minimum_support: SupportLevel | str | None = None,
+        resource_kind: ResourceKind | str | None = None,
+    ) -> list[DatasetMetadata]:
+        """List canonical metadata, optionally filtered by kind and capability grade."""
         minimum = SupportLevel.parse(minimum_support) if minimum_support is not None else None
+        kind = ResourceKind.parse(resource_kind) if resource_kind is not None else None
         order = {level: index for index, level in enumerate(SupportLevel)}
         with self._lock:
             values = [entry.metadata for entry in self._entries.values()]
+        if kind is not None:
+            values = [item for item in values if item.resource_kind is kind]
         if minimum is not None:
             values = [item for item in values if order[item.support_level] >= order[minimum]]
         return sorted(values, key=lambda item: item.dataset_id)
@@ -136,7 +150,7 @@ def register_dataset(
     *,
     replace: bool = False,
 ) -> DatasetMetadata:
-    """Register a dataset in the process-wide default registry."""
+    """Register a published-data ecosystem resource in the process-wide default registry."""
     return DATASETS.register(metadata, factory, replace=replace)
 
 
@@ -163,5 +177,10 @@ def open_dataset(dataset_id_or_alias: str, **kwargs: Any) -> DatasetAdapter:
     return DATASETS.open(dataset_id_or_alias, **kwargs)
 
 
-def list_datasets(*, minimum_support: SupportLevel | str | None = None) -> list[DatasetMetadata]:
-    return DATASETS.list(minimum_support=minimum_support)
+def list_datasets(
+    *,
+    minimum_support: SupportLevel | str | None = None,
+    resource_kind: ResourceKind | str | None = None,
+) -> list[DatasetMetadata]:
+    """List catalog records, retaining all resource kinds unless explicitly filtered."""
+    return DATASETS.list(minimum_support=minimum_support, resource_kind=resource_kind)

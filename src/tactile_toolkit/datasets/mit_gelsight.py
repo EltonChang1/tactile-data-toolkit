@@ -7,6 +7,7 @@ from tactile_toolkit.datasets.metadata import (
     DatasetMetadata,
     LicenseInfo,
     ProvenanceInfo,
+    ResourceKind,
     SupportLevel,
 )
 from tactile_toolkit.datasets.registry import register_dataset
@@ -128,6 +129,7 @@ MIT_GELSIGHT_DATASETS_METADATA = DatasetMetadata(
     sensors=("GelSight study-specific prototypes",),
     tasks=("hardness estimation", "force and shear measurement", "slip detection"),
     formats=("study-specific",),
+    resource_kind=ResourceKind.COLLECTION,
     support_level=SupportLevel.DISCOVERABLE,
     limitations=(
         "This record is an umbrella and must not be opened as if the studies share one schema.",

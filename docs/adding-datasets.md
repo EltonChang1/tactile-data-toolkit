@@ -1,6 +1,6 @@
 # Adding a published dataset
 
-Dataset integrations live under `tactile_toolkit.datasets` and are deliberately separate from raw-log readers. An adapter describes a published corpus, lazily yields normalized `TactileSample` objects, and never downloads a large or gated dataset merely because it was imported or opened.
+Dataset integrations live under `tactile_toolkit.datasets` and are deliberately separate from raw-log readers. A record declares whether it represents a dataset, a collection, or a reference index; only a qualified dataset adapter lazily yields normalized `TactileSample` objects, and importing or opening metadata never downloads a large or gated corpus.
 
 ## 1. Verify before implementing
 
@@ -28,6 +28,7 @@ from tactile_toolkit.datasets import (
     DatasetMetadata,
     LicenseInfo,
     ProvenanceInfo,
+    ResourceKind,
     SupportLevel,
 )
 from tactile_toolkit.types import Modality
@@ -73,6 +74,7 @@ METADATA = DatasetMetadata(
     sensors=("Published sensor name",),
     tasks=("material classification",),
     formats=("tar", "jpeg", "json"),
+    resource_kind=ResourceKind.DATASET,
     support_level=SupportLevel.LOADABLE,
     approximate_size_bytes=1_000_000,
     limitations=("Describe coverage and known collection bias.",),
@@ -80,7 +82,9 @@ METADATA = DatasetMetadata(
 )
 ```
 
-JSON metadata can be loaded with `DatasetMetadata.from_dict`; unknown schema versions, invalid URLs, malformed SHA-256 values, and missing required fields raise `DatasetMetadataError` with the offending field.
+`ResourceKind.DATASET` is the default, `COLLECTION` marks an umbrella whose children have independent schemas or terms, and `REFERENCE_INDEX` marks a bibliography or discovery hub that must never be presented as sample data. JSON metadata can be loaded with `DatasetMetadata.from_dict`; unknown schema versions, resource kinds, invalid URLs, malformed SHA-256 values, and missing required fields raise `DatasetMetadataError` with the offending field.
+
+Use `list_datasets(resource_kind="dataset")`, `"collection"`, or `"reference_index"` when a consumer needs one kind only. The unfiltered call remains backward compatible and returns the complete catalog.
 
 ## 3. Implement a lazy adapter
 
@@ -169,4 +173,5 @@ uv run mypy --follow-imports=skip src/tactile_toolkit/datasets
 - [ ] Checksums are verified when publishers provide them; absence is stated, not fabricated.
 - [ ] Canonical splits and group boundaries are preserved.
 - [ ] Support grades and limitations are updated without overstating conversion coverage.
+- [ ] `resource_kind` distinguishes datasets from umbrellas and discovery indexes.
 - [ ] The README entry has exactly two complete sentences in the required format.

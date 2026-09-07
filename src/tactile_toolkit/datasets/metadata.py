@@ -74,6 +74,31 @@ class AccessKind(StrEnum):
                 ) from exc
 
 
+class ResourceKind(StrEnum):
+    """Nature of a catalog record, independent of its implemented support level."""
+
+    DATASET = "dataset"
+    COLLECTION = "collection"
+    REFERENCE_INDEX = "reference_index"
+
+    @classmethod
+    def parse(cls, value: str | ResourceKind) -> ResourceKind:
+        if isinstance(value, ResourceKind):
+            return value
+        if not isinstance(value, str):
+            raise DatasetMetadataError("resource_kind must be a string")
+        try:
+            return cls(value)
+        except ValueError:
+            try:
+                return cls[value.upper()]
+            except KeyError as exc:
+                choices = ", ".join(item.value for item in cls)
+                raise DatasetMetadataError(
+                    f"Unknown resource kind {value!r}; expected one of: {choices}"
+                ) from exc
+
+
 def _text(value: Any, field_name: str, *, required: bool = True) -> str | None:
     if value is None:
         if required:
@@ -320,7 +345,7 @@ class AccessSource:
 
 @dataclass(frozen=True)
 class DatasetMetadata:
-    """Validated, serializable identity and provenance for one dataset release."""
+    """Validated identity and provenance for a dataset, collection, or reference index."""
 
     dataset_id: str
     name: str
@@ -341,6 +366,7 @@ class DatasetMetadata:
     checksums: Mapping[str, str] = field(default_factory=dict)
     limitations: tuple[str, ...] = ()
     aliases: tuple[str, ...] = ()
+    resource_kind: ResourceKind = ResourceKind.DATASET
 
     def __post_init__(self) -> None:
         dataset_id = _text(self.dataset_id, "dataset_id")
@@ -381,6 +407,7 @@ class DatasetMetadata:
         object.__setattr__(self, "sensors", _strings(self.sensors, "sensors"))
         object.__setattr__(self, "tasks", _strings(self.tasks, "tasks"))
         object.__setattr__(self, "formats", _strings(self.formats, "formats"))
+        object.__setattr__(self, "resource_kind", ResourceKind.parse(self.resource_kind))
         object.__setattr__(self, "limitations", _strings(self.limitations, "limitations"))
         aliases = tuple(dict.fromkeys(alias.lower() for alias in _strings(self.aliases, "aliases")))
         aliases = tuple(alias for alias in aliases if alias != self.dataset_id)
@@ -451,6 +478,7 @@ class DatasetMetadata:
             sensors=value.get("sensors", ()),
             tasks=value.get("tasks", ()),
             formats=value.get("formats", ()),
+            resource_kind=value.get("resource_kind", ResourceKind.DATASET),
             support_level=value.get("support_level", SupportLevel.CATALOGED),
             version=value.get("version"),
             revision=value.get("revision"),
@@ -478,6 +506,7 @@ class DatasetMetadata:
             "sensors": list(self.sensors),
             "tasks": list(self.tasks),
             "formats": list(self.formats),
+            "resource_kind": self.resource_kind.value,
             "support_level": self.support_level.value,
             "approximate_size_bytes": self.approximate_size_bytes,
             "checksums": dict(self.checksums),

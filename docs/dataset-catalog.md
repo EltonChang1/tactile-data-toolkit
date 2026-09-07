@@ -8,12 +8,13 @@ The terms below distinguish public access from permission to redistribute. A pub
 
 | Level | Meaning |
 | --- | --- |
-| Planned adapter | The source exposes a stable-enough format and a lawful access route for a typed, lazy loader or converter. |
-| Planned local adapter | The format can be supported, but users must obtain the data themselves because access is gated, noncommercial, or otherwise unsuitable for automatic redistribution. |
-| Catalog pending terms | The source is useful and publicly described, but access or data-use terms must be clarified before an acquisition integration is responsible. |
-| Reference only | The source is an index rather than a dataset and will be exposed only as a discovery resource. |
+| C1 — cataloged | Primary links, terms, formats, constraints, and an honest intended boundary are documented. |
+| C2 — discoverable | Runtime metadata can locate the official source and explain provenance and lawful access. |
+| C3 — loadable | A tested adapter lazily yields normalized samples from an official or user-provided copy. |
+| C4 — convertible | Supported fields can be converted to a documented toolkit output without inventing missing data. |
+| C5 — benchmark-ready | Canonical splits, metrics, and leakage protections are implemented and tested. |
 
-No planned integration implies that this Apache-2.0 repository relicenses third-party data. Dataset-specific terms, citations, access gates, and provenance must travel with every imported record.
+Resource kind is independent: `dataset` identifies one source, `collection` is an umbrella over independently governed releases, and `reference_index` is a discovery resource that yields no tactile samples. No integration implies that this Apache-2.0 repository relicenses third-party data; source-specific terms, citations, access gates, and provenance must travel with every imported record.
 
 ## Coverage summary
 
@@ -32,7 +33,7 @@ No planned integration implies that this Apache-2.0 repository relicenses third-
 | LMT Haptic Texture Database | Versioned releases covering 69, 108, or 184 materials with controlled/freehand texture measurements | Public archive index; no substantive reuse terms, checksum set, or verified manifest | C2 umbrella and release-specific discovery records |
 | Penn Haptic Texture Toolkit / HaTT | 100 texture models, recorded motion/force/vibration data, and surface images | Attributed noncommercial research terms; user-provided local copy | C3 bounded recorded-data XML adapter |
 | Multimodal Tactile Texture Dataset | Pressure/barometer and IMU streams for 12 textures at artifact-verified 30/35/40 mm/s | CC BY 4.0; 3.83 GB Mendeley V1 ZIP with publisher SHA-256; native pickle is unsafe | C3 confirmed acquisition and guarded paired adapter |
-| Awesome-Touch | A maintained bibliography and index of tactile sensors, datasets, simulators, and software | MIT-licensed repository; not a data collection | Reference only |
+| Awesome-Touch | A maintained bibliography and index of tactile sensors, datasets, simulators, software, hardware, products, and labs | MIT-licensed index repository at `3d07843d`; linked resources retain their own terms | C2 typed reference-index metadata; no sample adapter |
 
 ## Verified records
 
@@ -158,12 +159,12 @@ No planned integration implies that this Apache-2.0 repository relicenses third-
 
 ### Awesome-Touch
 
-- **Canonical source:** [official GitHub repository](https://github.com/linchangyi1/Awesome-Touch).
-- **Citation:** Cite the maintained repository and, when following an entry, cite the original dataset, paper, or tool rather than Awesome-Touch alone.
-- **Provenance and contents:** Awesome-Touch is a community-maintained bibliography and discovery index, not a dataset. Its sections cover tactile sensors, data collection, multimodal models, manipulation, representation learning, simulation, libraries, datasets, open-source projects, laboratories, and products.
-- **Packaging and popularity:** The source is Markdown and repository metadata; at verification time GitHub reported approximately 685 stars, 50 forks, and 415 commits. These mutable signals support its value as a discovery source but do not validate every linked resource.
-- **Rights and constraints:** The repository is MIT-licensed, while each linked item retains independent terms. Link presence is neither license evidence nor a guarantee that data remain available.
-- **Proposed support:** Expose it as a reference-only source, maintain a curated subset of canonical links, and use automated link/provenance checks without presenting it as loadable tactile data.
+- **Canonical sources:** [official GitHub repository](https://github.com/linchangyi1/Awesome-Touch), [revision-pinned README](https://github.com/linchangyi1/Awesome-Touch/blob/3d07843d2850eb0111001802d9658c9f91c22aca/README.md), and [revision-pinned MIT license](https://github.com/linchangyi1/Awesome-Touch/blob/3d07843d2850eb0111001802d9658c9f91c22aca/LICENSE.md).
+- **Citation:** The repository requests citation as Changyi Lin, *Awesome-Touch*, GitHub repository (2022); users must also cite the original paper, dataset, or tool reached through the index.
+- **Provenance and contents:** Awesome-Touch is a community-maintained bibliography and discovery index, not a dataset. Its current sections cover vision and non-vision tactile sensors, data collection, multimodal and manipulation research, representation learning, mapping, force estimation, simulators, libraries, datasets, open-source hardware/software, reviews, theses, products, and laboratories.
+- **Packaging, revision, and popularity:** The source is a Markdown README and external links; the Step 08 snapshot pins commit `3d07843d2850eb0111001802d9658c9f91c22aca`, authored on 2026-08-21. On 2026-09-06 the official GitHub repository was active and reported 768 stars, 56 forks, and 432 commits; these mutable signals demonstrate community interest but do not validate each link.
+- **Rights and constraints:** `LICENSE.md` is the MIT license for the index repository only, while every linked paper, dataset, model, tool, and hardware project retains independent terms. Link presence is neither license evidence nor a guarantee of access, availability, quality, or schema compatibility.
+- **Implemented support:** `AWESOME_TOUCH_METADATA` is a C2 `reference_index` record with canonical and revision-pinned links, citation, license scope, popularity snapshot, formats, and limitations. It has no adapter, modalities, sensors, byte size, or checksums because it contains no tactile samples; `open_dataset("awesome-touch")` therefore produces an intentional no-adapter error.
 
 ## Corrections to the initial source brief
 

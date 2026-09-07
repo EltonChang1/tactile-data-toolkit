@@ -20,6 +20,7 @@ from tactile_toolkit.datasets.metadata import (
     DatasetMetadata,
     LicenseInfo,
     ProvenanceInfo,
+    ResourceKind,
     SupportLevel,
 )
 from tactile_toolkit.datasets.registry import dataset_adapter, register_dataset
@@ -119,6 +120,7 @@ META_TACBENCH_METADATA = DatasetMetadata(
         "bead-maze manipulation",
     ),
     formats=("pickle", "jpeg", "configuration files"),
+    resource_kind=ResourceKind.COLLECTION,
     support_level=SupportLevel.DISCOVERABLE,
     limitations=(
         "The umbrella includes third-party benchmark components whose upstream terms and layouts "

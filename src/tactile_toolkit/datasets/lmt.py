@@ -9,6 +9,7 @@ from tactile_toolkit.datasets.metadata import (
     DatasetMetadata,
     LicenseInfo,
     ProvenanceInfo,
+    ResourceKind,
     SupportLevel,
 )
 from tactile_toolkit.datasets.registry import register_dataset
@@ -101,6 +102,7 @@ LMT_METADATA = DatasetMetadata(
     sensors=("accelerometer", "Phantom Omni"),
     tasks=("texture recognition", "surface material classification", "haptic similarity"),
     formats=("zip",),
+    resource_kind=ResourceKind.COLLECTION,
     support_level=SupportLevel.DISCOVERABLE,
     limitations=_LIMITATIONS,
     aliases=("lmt", "lmt-haptic-texture-database"),

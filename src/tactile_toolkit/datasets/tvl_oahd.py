@@ -7,6 +7,7 @@ from tactile_toolkit.datasets.metadata import (
     DatasetMetadata,
     LicenseInfo,
     ProvenanceInfo,
+    ResourceKind,
     SupportLevel,
 )
 from tactile_toolkit.datasets.registry import register_dataset
@@ -149,6 +150,7 @@ OAHD_METADATA = DatasetMetadata(
     ),
     tasks=("material recognition", "object pushing", "contact perception"),
     formats=("study-specific downloads", "Python load and visualization scripts"),
+    resource_kind=ResourceKind.COLLECTION,
     support_level=SupportLevel.DISCOVERABLE,
     limitations=(
         "OAHD has no collection-wide immutable revision, size, manifest, checksum set, schema, "

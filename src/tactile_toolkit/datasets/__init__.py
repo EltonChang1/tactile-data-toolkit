@@ -1,5 +1,12 @@
 """Published-dataset metadata, adapters, registry, acquisition, and validation."""
 
+from tactile_toolkit.datasets.awesome_touch import (
+    AWESOME_TOUCH_DATASET_SECTION_URL,
+    AWESOME_TOUCH_METADATA,
+    AWESOME_TOUCH_README_URL,
+    AWESOME_TOUCH_REPOSITORY_URL,
+    AWESOME_TOUCH_REVISION,
+)
 from tactile_toolkit.datasets.base import DatasetAdapter
 from tactile_toolkit.datasets.clamp import (
     CLAMP_CODE_REVISION,
@@ -70,6 +77,7 @@ from tactile_toolkit.datasets.metadata import (
     DatasetMetadata,
     LicenseInfo,
     ProvenanceInfo,
+    ResourceKind,
     SupportLevel,
     validate_metadata,
 )
@@ -131,6 +139,11 @@ from tactile_toolkit.datasets.tvl_oahd import (
 from tactile_toolkit.datasets.validation import DatasetValidationReport, validate_adapter
 
 __all__ = [
+    "AWESOME_TOUCH_DATASET_SECTION_URL",
+    "AWESOME_TOUCH_METADATA",
+    "AWESOME_TOUCH_README_URL",
+    "AWESOME_TOUCH_REPOSITORY_URL",
+    "AWESOME_TOUCH_REVISION",
     "DATASETS",
     "DATASET_METADATA_VERSION",
     "CLAMP_CODE_REVISION",
@@ -214,6 +227,7 @@ __all__ = [
     "MendeleyTexturesAdapter",
     "PennHattAdapter",
     "ProvenanceInfo",
+    "ResourceKind",
     "RegistryEntry",
     "SupportLevel",
     "TacBenchForceSlipAdapter",
