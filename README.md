@@ -113,11 +113,33 @@ Contributors can use the [published-dataset extension guide](docs/adding-dataset
 
 [Touch100k](https://cocacola-lab.github.io/Touch100k/) is a touch-language-vision corpus designed to align GelSight representations with generated and human-corrected tactile descriptions at two levels of detail. It contains paired touch and scene JPEGs with `img`, `sentence_desc`, and `phrase_desc` JSON-lines records, which the toolkit loads lazily from a user-obtained local copy under CC BY-NC 4.0 while flagging that the current official Drive release is partial.
 
+#### Touch-Vision-Language / TVL
+
+[Touch-Vision-Language / TVL](https://tactile-vlm.github.io/) is a 43,741-pair DIGIT, scene-vision, and open-vocabulary language corpus that matters for multimodal tactile alignment. It contains SSVTP and HCT images with human and generated descriptions, which the toolkit exposes as pinned C2 discovery metadata without downloading because the data cards do not state reuse terms and the original layout has a documented touch/image swap.
+
+#### Meta DIGIT benchmarks / Sparsh TacBench
+
+[Meta DIGIT benchmarks / Sparsh TacBench](https://github.com/facebookresearch/sparsh) is a six-task suite for evaluating transferable representations across DIGIT, GelSight Mini, and linked tactile sources. It contains released force/slip trajectories and relative-pose sequences in native pickle files, which the toolkit exposes through pinned C3 local adapters that require explicit trust while keeping the broader, externally sourced suite at C2.
+
+#### TacVerse
+
+[TacVerse](https://lannwei.github.io/Tactile_Database/) is a 106,800-image benchmark spanning seven vision-based tactile sensors that supports cross-sensor shape, grating, and force research. It contains gated CC BY 4.0 JPEG/CSV task archives, which the toolkit downloads only through an explicitly confirmed pinned Hugging Face source and loads lazily at C3 without fabricating split labels that the official code derives at runtime.
+
+#### Open Access Haptic Database / OAHD
+
+[Open Access Haptic Database / OAHD](https://www.oahd.gatech.edu/) is Georgia Tech Healthcare Robotics Lab's study index for multimodal robot haptics and reusable sensor designs. It contains separate force, thermal, vibration, position, script, and hardware releases, which the toolkit exposes as C2 collection metadata while requiring study-level terms and citations before any child adapter is added.
+
+#### CLAMP
+
+[CLAMP](https://emprise.cs.cornell.edu/clamp/) is a crowdsourced multimodal haptic corpus covering millions of measurements from household objects, devices, and participants for material and compliance recognition. It contains raw device archives and a filtered CC BY 4.0 object-array NPZ with force, thermal, vibration, proprioception, labels, and vision predictions, which the toolkit exposes through a C3 contact-sequence adapter with explicit trust and object-safe grouping.
+
 ### Dataset guides
 
 See the [FreeTacMan and FoTa guide](docs/datasets/freetacman-and-fota.md) for acquisition, validation, and runnable local examples.
 
 See the [Tac2Pose, MIT GelSight, and Touch100k guide](docs/datasets/tac2pose-gelsight-touch100k.md) for honest discovery records, noncommercial terms, local layout, validation, and a runnable Touch100k example.
+
+See the [TVL, TacBench, TacVerse, OAHD, and CLAMP guide](docs/datasets/tvl-tacbench-tacverse-oahd-clamp.md) for access boundaries, pinned releases, guarded serialization, local layouts, and runnable examples.
 
 ## Command line
 

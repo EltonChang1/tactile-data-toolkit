@@ -1,6 +1,15 @@
 """Published-dataset metadata, adapters, registry, acquisition, and validation."""
 
 from tactile_toolkit.datasets.base import DatasetAdapter
+from tactile_toolkit.datasets.clamp import (
+    CLAMP_CODE_REVISION,
+    CLAMP_DATAVERSE_DOI,
+    CLAMP_FILTERED_MD5,
+    CLAMP_FILTERED_SIZE_BYTES,
+    CLAMP_FILTERED_URL,
+    CLAMP_METADATA,
+    ClampFilteredAdapter,
+)
 from tactile_toolkit.datasets.download import (
     DatasetCache,
     IntegrityReport,
@@ -58,17 +67,50 @@ from tactile_toolkit.datasets.registry import (
     open_dataset,
     register_dataset,
 )
+from tactile_toolkit.datasets.tacbench import (
+    META_TACBENCH_METADATA,
+    TACBENCH_CODE_REVISION,
+    TACBENCH_DIGIT_FORCE_REVISION,
+    TACBENCH_DIGIT_FORCE_SOURCE,
+    TACBENCH_DIGIT_POSE_REVISION,
+    TACBENCH_DIGIT_POSE_SOURCE,
+    TACBENCH_FORCE_SLIP_METADATA,
+    TACBENCH_GELSIGHT_FORCE_REVISION,
+    TACBENCH_GELSIGHT_FORCE_SOURCE,
+    TACBENCH_POSE_METADATA,
+    TacBenchForceSlipAdapter,
+    TacBenchPoseAdapter,
+)
+from tactile_toolkit.datasets.tacverse import (
+    TACVERSE_CODE_REVISION,
+    TACVERSE_METADATA,
+    TACVERSE_REVISION,
+    TACVERSE_SOURCE,
+    TacVerseAdapter,
+)
 from tactile_toolkit.datasets.touch100k import (
     TOUCH100K_DATA_URL,
     TOUCH100K_METADATA,
     TOUCH100K_SCHEMA_REVISION,
     Touch100kAdapter,
 )
+from tactile_toolkit.datasets.tvl_oahd import (
+    OAHD_METADATA,
+    TVL_CORRECTED_REVISION,
+    TVL_METADATA,
+    TVL_ORIGINAL_REVISION,
+)
 from tactile_toolkit.datasets.validation import DatasetValidationReport, validate_adapter
 
 __all__ = [
     "DATASETS",
     "DATASET_METADATA_VERSION",
+    "CLAMP_CODE_REVISION",
+    "CLAMP_DATAVERSE_DOI",
+    "CLAMP_FILTERED_MD5",
+    "CLAMP_FILTERED_SIZE_BYTES",
+    "CLAMP_FILTERED_URL",
+    "CLAMP_METADATA",
     "FOUNDATION_TACTILE_METADATA",
     "FOUNDATION_TACTILE_REVISION",
     "FOUNDATION_TACTILE_SOURCE",
@@ -79,13 +121,32 @@ __all__ = [
     "MIT_GELSIGHT_FORCE_SHEAR_SLIP_METADATA",
     "MIT_GELSIGHT_HARDNESS_METADATA",
     "MIT_GELSIGHT_NEURAL_SLIP_METADATA",
+    "META_TACBENCH_METADATA",
+    "OAHD_METADATA",
     "TAC2POSE_METADATA",
+    "TACBENCH_CODE_REVISION",
+    "TACBENCH_DIGIT_FORCE_REVISION",
+    "TACBENCH_DIGIT_FORCE_SOURCE",
+    "TACBENCH_DIGIT_POSE_REVISION",
+    "TACBENCH_DIGIT_POSE_SOURCE",
+    "TACBENCH_FORCE_SLIP_METADATA",
+    "TACBENCH_GELSIGHT_FORCE_REVISION",
+    "TACBENCH_GELSIGHT_FORCE_SOURCE",
+    "TACBENCH_POSE_METADATA",
+    "TACVERSE_CODE_REVISION",
+    "TACVERSE_METADATA",
+    "TACVERSE_REVISION",
+    "TACVERSE_SOURCE",
     "TOUCH100K_DATA_URL",
     "TOUCH100K_METADATA",
     "TOUCH100K_SCHEMA_REVISION",
+    "TVL_CORRECTED_REVISION",
+    "TVL_METADATA",
+    "TVL_ORIGINAL_REVISION",
     "AccessKind",
     "AccessSource",
     "Citation",
+    "ClampFilteredAdapter",
     "DatasetAccessError",
     "DatasetAdapter",
     "DatasetCache",
@@ -106,6 +167,9 @@ __all__ = [
     "ProvenanceInfo",
     "RegistryEntry",
     "SupportLevel",
+    "TacBenchForceSlipAdapter",
+    "TacBenchPoseAdapter",
+    "TacVerseAdapter",
     "Touch100kAdapter",
     "dataset_adapter",
     "default_cache_dir",
