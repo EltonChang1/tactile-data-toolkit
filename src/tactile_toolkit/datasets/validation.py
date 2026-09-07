@@ -50,7 +50,7 @@ def _local_asset_path(
     reference: AssetReference, root: Path | None
 ) -> tuple[Path | None, str | None]:
     parsed = urlparse(reference.uri)
-    if parsed.scheme and parsed.scheme != "file":
+    if parsed.scheme and parsed.scheme != "file" and not Path(reference.uri).drive:
         return None, None
     if parsed.scheme == "file":
         candidate = Path(unquote(parsed.path))
