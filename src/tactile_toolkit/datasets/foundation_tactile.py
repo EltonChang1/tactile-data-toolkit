@@ -225,12 +225,14 @@ class FoundationTactileAdapter(DatasetAdapter):
             raise DatasetValidationError(
                 f"Could not read FoTa JSON member {member.name!r} in {shard}"
             )
-        try:
-            value = json.loads(handle.read(self.max_json_bytes + 1).decode("utf-8"))
-        except (UnicodeDecodeError, json.JSONDecodeError) as exc:
-            raise DatasetValidationError(
-                f"Invalid FoTa JSON member {member.name!r} in {shard}: {exc}"
-            ) from exc
+        with handle:
+            try:
+                payload = handle.read(self.max_json_bytes + 1).decode("utf-8")
+                value = json.loads(payload)
+            except (UnicodeDecodeError, json.JSONDecodeError) as exc:
+                raise DatasetValidationError(
+                    f"Invalid FoTa JSON member {member.name!r} in {shard}: {exc}"
+                ) from exc
         if not isinstance(value, dict):
             raise DatasetValidationError(
                 f"FoTa JSON member {member.name!r} in {shard} must contain an object"
