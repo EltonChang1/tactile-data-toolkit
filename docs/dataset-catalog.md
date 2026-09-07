@@ -17,7 +17,7 @@ No planned integration implies that this Apache-2.0 repository relicenses third-
 
 ## Coverage summary
 
-| Source | Verified scale and scope | Data rights and access | Proposed toolkit support |
+| Source | Verified scale and scope | Data rights and access | Toolkit support |
 | --- | --- | --- | --- |
 | FreeTacMan | More than 3 million paired wrist/tactile frames and more than 10,000 trajectories over 50 described manipulation tasks | MIT-licensed Hugging Face data; 50.3 GB hosted snapshot with 46 task directories | C3 local lazy adapter |
 | FoTa / FoundationTactile | 3,083,452 images from 13 camera-based tactile sensors and 11 tasks | MIT-licensed Hugging Face data; 397 GB hosted snapshot | C3 streaming local adapter |
@@ -29,9 +29,9 @@ No planned integration implies that this Apache-2.0 repository relicenses third-
 | TacVerse | 106,800 images from seven vision-based tactile sensors across shape, grating, and force tasks | CC BY 4.0 gated 29.4 GB Hugging Face snapshot | C3 local lazy adapter and pinned acquisition |
 | OAHD | An umbrella of household haptic studies with thermal, force, vibration, and robot-state signals | Public study pages and downloads; no collection-wide data license found | C2 discoverable umbrella; no loader |
 | CLAMP | 12.3 million multimodal datapoints from 5,357 objects, 25,100 trials, 16 devices, and 41 participants | CC BY 4.0 Harvard Dataverse data; 6.39 GB release | C3 guarded filtered-NPZ adapter |
-| LMT Haptic Texture Database | Versioned releases covering 69, 108, or 184 materials with controlled/freehand texture measurements | Public archives; the official page does not state usable data terms | Catalog pending terms |
-| Penn Haptic Texture Toolkit / HaTT | 100 texture models, recorded motion/force/vibration data, and surface images | Free for attributed noncommercial research under the attached Penn license | Planned local adapter |
-| Multimodal Tactile Texture Dataset | Pressure/barometer and IMU streams for 12 textures at three scan velocities | CC BY 4.0 Mendeley Data release | Planned adapter |
+| LMT Haptic Texture Database | Versioned releases covering 69, 108, or 184 materials with controlled/freehand texture measurements | Public archive index; no substantive reuse terms, checksum set, or verified manifest | C2 umbrella and release-specific discovery records |
+| Penn Haptic Texture Toolkit / HaTT | 100 texture models, recorded motion/force/vibration data, and surface images | Attributed noncommercial research terms; user-provided local copy | C3 bounded recorded-data XML adapter |
+| Multimodal Tactile Texture Dataset | Pressure/barometer and IMU streams for 12 textures at artifact-verified 30/35/40 mm/s | CC BY 4.0; 3.83 GB Mendeley V1 ZIP with publisher SHA-256; native pickle is unsafe | C3 confirmed acquisition and guarded paired adapter |
 | Awesome-Touch | A maintained bibliography and index of tactile sensors, datasets, simulators, and software | MIT-licensed repository; not a data collection | Reference only |
 
 ## Verified records
@@ -128,13 +128,13 @@ No planned integration implies that this Apache-2.0 repository relicenses third-
 
 ### LMT Haptic Texture Database
 
-- **Canonical sources:** [Technical University of Munich dataset page](https://www.ce.cit.tum.de/en/lmt/forschung/datensaetze/texture-database/) and [official download archive](https://zeus.lmt.ei.tum.de/downloads/texture/).
-- **Citation:** Publications should use the papers linked beside the chosen release on the TUM page because the 69-, 108-, and 184-material releases are not interchangeable.
-- **Provenance and contents:** LMT provides multiple generations rather than one fixed “100+ texture” dataset: the archive currently lists releases for 69, 108, and 184 materials. Controlled scans vary force and velocity using a Phantom Omni and accelerometer, while the freehand component supplies ten recordings per texture—five linear and five circular—and some releases add material images and perceptual similarity ratings from 30 subjects.
+- **Canonical sources:** [Technical University of Munich dataset page](https://www.ce.cit.tum.de/en/lmt/forschung/datensaetze/texture-database/), [current official download archive](https://zeus.lkn.ei.tum.de/downloads/texture/), [2014 paper record](https://mediatum.ub.tum.de/node?change_language=en&id=1241270), and [2017 paper record](https://mediatum.ub.tum.de/node?change_language=en&id=1420980).
+- **Citation:** Cite *A Haptic Texture Database for Tool-mediated Texture Recognition and Classification* for the original database and the release-specific paper linked by TUM; the 69-, 108-, and 184-material releases are not interchangeable.
+- **Provenance and contents:** LMT provides multiple generations rather than one fixed “100+ texture” dataset: the archive lists releases for 69, 108, and 184 materials. TUM describes controlled scans using a Phantom Omni and accelerometer plus uncontrolled freehand explorations for the 69-texture dataset; other visual and perceptual fields are release-dependent rather than collection-wide guarantees.
 - **Sensors, modalities, and labels:** Core signals include acceleration plus exploration force/position or motion settings, with texture/material identity and controlled/freehand trial metadata. Available visual and perceptual annotations depend on the selected release.
-- **Packaging and size:** The official archive lists approximately 6,934 MB for the 69-material v1.4 release, 3,190 MB for the older 108-material bundle, and 83,484 MB for the current 184-material bundle. Exact internal formats and checksums need sample-level verification before a loader is promised, and the archive currently redirects to a host that rejects automated requests with HTTP 403.
-- **Rights and constraints:** Files are publicly downloadable, but the institutional page's license section did not expose substantive reuse terms during this audit. The toolkit must not redistribute files or assume “downloadable” means permissively licensed.
-- **Proposed support:** Model each release separately and add user-supplied archive inspection only after its internal manifest and license are confirmed; keep version, scan protocol, material identity, and perceptual-annotation provenance explicit.
+- **Packaging and size:** The official archive index lists 6,934 decimal MB for the 69-material v1.4 release, 3,190 decimal MB for the 108-material bundle, and 83,484 decimal MB for the 184-material bundle. It publishes no checksums or stable machine-readable schema, and the archive did not return a reliable automated response during Step 07 verification.
+- **Rights and constraints:** Files are publicly listed, but the institutional page's `Licence` section exposes no substantive reuse terms. The toolkit does not redistribute, download, or parse the files and does not assume that public availability grants permission.
+- **Implemented support:** The C2 `lmt-textures` umbrella and release-specific `lmt-textures-69`, `lmt-textures-108`, and `lmt-textures-184` records capture sources, decimal archive sizes, version boundaries, modalities, citations, and the terms limitation. A loader remains deferred until a selected release has clear data terms, an inspectable native manifest, and representative lawful fixtures.
 
 ### Penn Haptic Texture Toolkit / HaTT
 
@@ -144,17 +144,17 @@ No planned integration implies that this Apache-2.0 repository relicenses third-
 - **Sensors, modalities, and labels:** Each texture has two recorded-data files, each containing ten seconds sampled at 10 kHz with three-axis acceleration, force, position/speed, and texture identity. The XML recordings and rendered-model parameters support vibration/friction playback as well as recognition research.
 - **Packaging and size:** The report describes XML recordings, images, model files, and MATLAB/rendering support; the former project download site was not reliably available during this audit. A current official archive size and checksum manifest could not be verified.
 - **Rights and constraints:** The attached University of Pennsylvania license permits attributed, noncommercial research use and retains Penn copyright; it is not an unrestricted open-data license. Users must obtain and use the material under those terms.
-- **Proposed support:** Add a local XML/model reader with units and sampling checks, surface-image association, citation output, and a prominent noncommercial restriction; do not mirror the archive.
+- **Implemented support:** The C3 local adapter bounds XML file size, rejects DTD/entity declarations, accepts documented nested or compound axis fields, validates finite vectors, sampling rate, units, and normal/tangential pairing, and emits one grouped sequence per recorded-data XML file. It does not mirror the archive, guess image associations, interpret model/rendering files, or invent splits.
 
 ### Multimodal Tactile Texture Dataset (Mendeley Data)
 
 - **Canonical sources:** [Mendeley Data version 1](https://data.mendeley.com/datasets/n666tk4mw9/1) and [versioned DOI](https://doi.org/10.17632/n666tk4mw9.1).
 - **Citation:** Bruno Monteiro Rocha Lima, Thiago Eustaquio Alves de Oliveira, and Vinicius Prado da Fonseca, *Multimodal Tactile Texture Dataset*, Mendeley Data, V1 (2023), DOI 10.17632/n666tk4mw9.1.
-- **Provenance and contents:** The release records 12 textures explored at 30, 40, and 45 mm/s. It combines a pressure/barometer tactile channel with IMU gravity, angular rate, and magnetic-field signals for speed-aware texture classification.
-- **Sensors, modalities, and labels:** Data are grouped by speed and texture and contain `Full_baro` and `Full_imu` measurements. Texture identity, exploration velocity, pressure, gravity, gyroscope, and magnetometer readings form the usable labels and signals.
-- **Packaging and size:** Version 1 was published on 2023-08-15 as pickle files plus a reader notebook. The landing page did not expose a stable total byte count or checksums during verification.
+- **Provenance and contents:** The release records 12 textures explored at 30, 35, and 40 mm/s according to the immutable ZIP README and directory structure; the landing-page description instead says 30, 40, and 45 mm/s. It combines a pressure/barometer tactile channel with IMU acceleration, angular-rate, and magnetic-field columns for speed-aware texture classification.
+- **Sensors, modalities, and labels:** Primary data are grouped by speed and texture under paired `full_baro` and `full_imu` folders. Texture identity, artifact-derived exploration velocity, trial identity, the `baro` column, and nine `imu_a*`, `imu_g*`, and `imu_m*` columns form the usable labels and signals, but physical units are not published.
+- **Packaging and size:** Version 1 was published on 2023-08-15 as a 3,831,798,836-byte ZIP plus a 29,865-byte reader notebook, for 3,831,828,701 hosted bytes. The official versioned file API publishes ZIP SHA-256 `56468a6bc7191b46e12f09fece605d117bf29e8c678ae458b885e01a41917572`; range-based central-directory inspection found 28,808 members and 21,121,661,772 uncompressed bytes without downloading the full archive.
 - **Rights and constraints:** Mendeley Data declares CC BY 4.0. Python pickle is executable serialization, so the toolkit must offer an explicit trusted-import boundary and convert validated content to a safe format before normal use.
-- **Proposed support:** Add version-pinned acquisition metadata, a guarded pickle importer, array/schema validation, safe converted fixtures, and normalization of units and velocity/texture labels.
+- **Implemented support:** Explicit acquisition requires confirmation before the 3.83 GB transfer and uses resumable cache download with publisher size and SHA-256 verification. The C3 local adapter requires explicit pickle trust, bounds each file, reads only paired primary pressure/IMU trials, converts native datetime indices to relative seconds, validates paths/columns/values, and ignores derived single-axis folders to prevent duplicate samples.
 
 ### Awesome-Touch
 
@@ -173,7 +173,8 @@ No planned integration implies that this Apache-2.0 repository relicenses third-
 4. TVL contains 43,741 in-contact pairs, not merely “over 43,000,” and its original hosted layout has a known image/tactile-folder correction that adapters must detect.
 5. LMT has distinct 69-, 108-, and 184-material releases; claims about “100+ surfaces” must name the selected version and available modalities.
 6. Penn HaTT and Touch100k are available only under noncommercial terms, while TVL, OAHD, Tac2Pose, and LMT do not expose sufficiently clear collection-level data terms for automatic acquisition.
-7. Awesome-Touch is a discovery index, not a tactile dataset, so its integration must remain reference-only.
+7. The Mendeley landing page says 30, 40, and 45 mm/s, but its immutable V1 ZIP README and path names say 30, 35, and 40 mm/s; toolkit metadata follows the artifact and preserves the discrepancy.
+8. Awesome-Touch is a discovery index, not a tactile dataset, so its integration must remain reference-only.
 
 ## Integration acceptance checklist
 

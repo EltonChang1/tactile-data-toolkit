@@ -87,7 +87,7 @@ Architecture notes live in [docs/architecture.md](docs/architecture.md).
 
 ## Dataset ecosystem
 
-The evidence-checked [dataset source catalog](docs/dataset-catalog.md) records canonical sources, licenses, formats, access constraints, and proposed support levels for the tactile libraries covered by this project. The [compatibility matrix](docs/dataset-coverage.md) distinguishes catalog, loading, conversion, and benchmark support while documenting how heterogeneous source data map into the toolkit.
+The evidence-checked [dataset source catalog](docs/dataset-catalog.md) records canonical sources, licenses, formats, access constraints, and support levels for the tactile libraries covered by this project. The [compatibility matrix](docs/dataset-coverage.md) distinguishes catalog, loading, conversion, and benchmark support while documenting how heterogeneous source data map into the toolkit.
 
 Contributors can use the [published-dataset extension guide](docs/adding-datasets.md) to add typed metadata, lazy adapters, verified acquisition, and network-free fixtures without redistributing third-party corpora.
 
@@ -133,6 +133,18 @@ Contributors can use the [published-dataset extension guide](docs/adding-dataset
 
 [CLAMP](https://emprise.cs.cornell.edu/clamp/) is a crowdsourced multimodal haptic corpus covering millions of measurements from household objects, devices, and participants for material and compliance recognition. It contains raw device archives and a filtered CC BY 4.0 object-array NPZ with force, thermal, vibration, proprioception, labels, and vision predictions, which the toolkit exposes through a C3 contact-sequence adapter with explicit trust and object-safe grouping.
 
+#### LMT Haptic Texture Database
+
+[LMT Haptic Texture Database](https://www.ce.cit.tum.de/en/lmt/forschung/datensaetze/texture-database/) is a Technical University of Munich collection of controlled and freehand surface explorations whose distinct 69-, 108-, and 184-material releases support texture recognition research. It contains release-dependent acceleration, force or motion settings, images, and perceptual annotations, which the toolkit exposes as separate C2 discovery records without downloading because the publisher provides no substantive reuse license or verified manifest.
+
+#### Penn Haptic Texture Toolkit / HaTT
+
+[Penn Haptic Texture Toolkit / HaTT](https://repository.upenn.edu/bitstreams/960863b6-df14-4770-9068-b1b2bf6a50f1/download) is a 100-surface collection of measured explorations and data-driven haptic models for recognition and virtual-texture rendering under attributed noncommercial research terms. It contains 10 kHz XML acceleration, force, position, and speed recordings plus surface images, models, and code, which the toolkit exposes through a bounded C3 local XML adapter while leaving unverified rendering packages untouched.
+
+#### Multimodal Tactile Texture Dataset (Mendeley Data)
+
+[Multimodal Tactile Texture Dataset](https://data.mendeley.com/datasets/n666tk4mw9/1) is a CC BY 4.0 pressure-and-IMU corpus for classifying 12 surfaces explored at the artifact-verified speeds of 30, 35, and 40 mm/s. It contains paired barometer and nine-axis IMU pickle trials, which the toolkit acquires only after explicit 3.83 GB confirmation and publisher SHA-256 verification and loads at C3 from an extracted trusted copy without duplicating derived axis files.
+
 ### Dataset guides
 
 See the [FreeTacMan and FoTa guide](docs/datasets/freetacman-and-fota.md) for acquisition, validation, and runnable local examples.
@@ -140,6 +152,8 @@ See the [FreeTacMan and FoTa guide](docs/datasets/freetacman-and-fota.md) for ac
 See the [Tac2Pose, MIT GelSight, and Touch100k guide](docs/datasets/tac2pose-gelsight-touch100k.md) for honest discovery records, noncommercial terms, local layout, validation, and a runnable Touch100k example.
 
 See the [TVL, TacBench, TacVerse, OAHD, and CLAMP guide](docs/datasets/tvl-tacbench-tacverse-oahd-clamp.md) for access boundaries, pinned releases, guarded serialization, local layouts, and runnable examples.
+
+See the [LMT, Penn HaTT, and Mendeley tactile textures guide](docs/datasets/lmt-hatt-mendeley.md) for release boundaries, licensing, guarded local loading, verified acquisition, layouts, and runnable examples.
 
 ## Command line
 
