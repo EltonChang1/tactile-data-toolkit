@@ -53,7 +53,7 @@ class MinimalAdapter(DatasetAdapter):
                             AssetReference(
                                 row["asset"],
                                 media_type="text/csv",
-                                size_bytes=row["size_bytes"],
+                                size_bytes=(root / row["asset"]).stat().st_size,
                             ),
                             sensor="Synthetic 2x2 taxel",
                         )
