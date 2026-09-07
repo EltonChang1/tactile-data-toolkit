@@ -18,6 +18,13 @@ class Modality(StrEnum):
     WRENCH = "wrench"
     POSE = "pose"
     JOINT_STATE = "joint_state"
+    VISION = "vision"
+    LANGUAGE = "language"
+    AUDIO = "audio"
+    VIBRATION = "vibration"
+    TEMPERATURE = "temperature"
+    PRESSURE = "pressure"
+    IMU = "imu"
     UNKNOWN = "unknown"
 
     @classmethod

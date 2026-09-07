@@ -5,6 +5,7 @@ robotic tactile sensors (vision-tactile gel fingers, taxel arrays, and
 force/torque wrenches).
 """
 
+from tactile_toolkit.model import AssetReference, SampleKind, TactileObservation, TactileSample
 from tactile_toolkit.schema import SCHEMA, SCHEMA_VERSION, OpenTactileSchema, validate
 from tactile_toolkit.types import Modality, SensorMetadata, Stream, TactileChunk
 
@@ -13,13 +14,17 @@ __version__ = "0.1.0"
 __all__ = [
     "SCHEMA",
     "SCHEMA_VERSION",
+    "AssetReference",
     "ConvertPipeline",
     "Modality",
     "OpenTactileSchema",
     "PipelineConfig",
+    "SampleKind",
     "SensorMetadata",
     "Stream",
     "TactileChunk",
+    "TactileObservation",
+    "TactileSample",
     "__version__",
     "validate",
 ]

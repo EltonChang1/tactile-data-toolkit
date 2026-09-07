@@ -1,0 +1,2 @@
+{"sample_id":"sample-0","asset":"touch/000.csv","split":"train","texture":"smooth","size_bytes":16}
+{"sample_id":"sample-1","asset":"touch/001.csv","split":"validation","texture":"rough","size_bytes":16}

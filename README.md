@@ -85,6 +85,103 @@ MCAP / bag / CSV  ->  modality resolve  ->  time align  ->  quality gate
 
 Architecture notes live in [docs/architecture.md](docs/architecture.md).
 
+## Dataset ecosystem
+
+The evidence-checked [dataset source catalog](docs/dataset-catalog.md) records canonical sources, licenses, formats, access constraints, and support levels for the tactile libraries covered by this project. The [compatibility matrix](docs/dataset-coverage.md) distinguishes catalog, loading, conversion, and benchmark support while documenting how heterogeneous source data map into the toolkit.
+
+The [discovered dataset candidate inventory](docs/discovered-dataset-candidates.md) records additional primary-source leads, license confidence, adoption evidence, access cost, overlap, and likely integration effort without implying toolkit support.
+
+The [Step 10 qualification record](docs/discovered-dataset-shortlist.md) selects a bounded implementation shortlist and records why every other candidate is deferred or rejected from the current program.
+
+Contributors can use the [published-dataset extension guide](docs/adding-datasets.md) to add typed metadata, lazy adapters, verified acquisition, and network-free fixtures without redistributing third-party corpora.
+
+### Discover and inspect a first sample
+
+List every dataset, collection, and reference index together with its support level and adapter availability:
+
+```bash
+uv run python examples/datasets/first_sample.py --list
+```
+
+Then inspect one normalized sample from a local release without loading the full corpus; this repository includes a tiny Touch100k-compatible fixture for a network-free smoke test:
+
+```bash
+uv run python examples/datasets/first_sample.py \
+  touch100k tests/fixtures/datasets/touch100k --split train
+```
+
+The command prints dataset provenance, license, task, labels, grouping, modalities, and lazy asset or array shapes as JSON. See the [published-data quickstart](docs/datasets/quickstart.md) before using restricted, gated, or pickle-backed sources.
+
+### Published datasets and reference sources
+
+#### FreeTacMan (OpenDriveLab)
+
+[FreeTacMan](https://huggingface.co/datasets/OpenDriveLab/FreeTacMan) is a large robot-free visuo-tactile manipulation corpus whose synchronized demonstrations support representation and policy learning for contact-rich tasks. It contains MP4 camera streams with timestamped tool-center-point and gripper CSV trajectories, which the toolkit exposes through a revision-pinned local lazy adapter with explicit camera-role and integrity validation.
+
+#### FoTa / FoundationTactile
+
+[FoTa / FoundationTactile](https://huggingface.co/datasets/alanz-mit/FoundationTactile) is a multi-sensor, multi-task tactile image corpus designed to support transferable representation learning across heterogeneous optical sensors. It contains more than three million paired JPEG and task-specific JSON records in WebDataset TAR shards, which the toolkit streams from an extracted revision-pinned snapshot while preserving source, sensor, split, labels, and member provenance.
+
+#### Tac2Pose
+
+[Tac2Pose](https://arxiv.org/abs/2204.11701) is an MIT tactile pose-estimation study using GelSlim 3.0 observations and known object geometry to localize 20 real objects from first contact. It contains study-described paired tactile images, calibrated poses, contact renderings, meshes, and calibration touches, which the toolkit exposes as an evidence-backed C2 metadata record because no active official manifest or reusable data terms could be verified.
+
+#### MIT GelSight research datasets
+
+[MIT GelSight research datasets](https://people.csail.mit.edu/yuan_wz/hardness-estimation.htm) are separate study resources for hardness, marker-based force and shear, and slip detection rather than one uniformly packaged corpus. They contain study-specific GelSight image sequences and experimental labels where released, which the toolkit exposes through an umbrella plus three C2 child records while withholding loaders where files or data terms are missing.
+
+#### Touch100k
+
+[Touch100k](https://cocacola-lab.github.io/Touch100k/) is a touch-language-vision corpus designed to align GelSight representations with generated and human-corrected tactile descriptions at two levels of detail. It contains paired touch and scene JPEGs with `img`, `sentence_desc`, and `phrase_desc` JSON-lines records, which the toolkit loads lazily from a user-obtained local copy under CC BY-NC 4.0 while flagging that the current official Drive release is partial.
+
+#### Touch-Vision-Language / TVL
+
+[Touch-Vision-Language / TVL](https://tactile-vlm.github.io/) is a 43,741-pair DIGIT, scene-vision, and open-vocabulary language corpus that matters for multimodal tactile alignment. It contains SSVTP and HCT images with human and generated descriptions, which the toolkit exposes as pinned C2 discovery metadata without downloading because the data cards do not state reuse terms and the original layout has a documented touch/image swap.
+
+#### Meta DIGIT benchmarks / Sparsh TacBench
+
+[Meta DIGIT benchmarks / Sparsh TacBench](https://github.com/facebookresearch/sparsh) is a six-task suite for evaluating transferable representations across DIGIT, GelSight Mini, and linked tactile sources. It contains released force/slip trajectories and relative-pose sequences in native pickle files, which the toolkit exposes through pinned C3 local adapters that require explicit trust while keeping the broader, externally sourced suite at C2.
+
+#### TacVerse
+
+[TacVerse](https://lannwei.github.io/Tactile_Database/) is a 106,800-image benchmark spanning seven vision-based tactile sensors that supports cross-sensor shape, grating, and force research. It contains gated CC BY 4.0 JPEG/CSV task archives, which the toolkit downloads only through an explicitly confirmed pinned Hugging Face source and loads lazily at C3 without fabricating split labels that the official code derives at runtime.
+
+#### Open Access Haptic Database / OAHD
+
+[Open Access Haptic Database / OAHD](https://www.oahd.gatech.edu/) is Georgia Tech Healthcare Robotics Lab's study index for multimodal robot haptics and reusable sensor designs. It contains separate force, thermal, vibration, position, script, and hardware releases, which the toolkit exposes as C2 collection metadata while requiring study-level terms and citations before any child adapter is added.
+
+#### CLAMP
+
+[CLAMP](https://emprise.cs.cornell.edu/clamp/) is a crowdsourced multimodal haptic corpus covering millions of measurements from household objects, devices, and participants for material and compliance recognition. It contains raw device archives and a filtered CC BY 4.0 object-array NPZ with force, thermal, vibration, proprioception, labels, and vision predictions, which the toolkit exposes through a C3 contact-sequence adapter with explicit trust and object-safe grouping.
+
+#### LMT Haptic Texture Database
+
+[LMT Haptic Texture Database](https://www.ce.cit.tum.de/en/lmt/forschung/datensaetze/texture-database/) is a Technical University of Munich collection of controlled and freehand surface explorations whose distinct 69-, 108-, and 184-material releases support texture recognition research. It contains release-dependent acceleration, force or motion settings, images, and perceptual annotations, which the toolkit exposes as separate C2 discovery records without downloading because the publisher provides no substantive reuse license or verified manifest.
+
+#### Penn Haptic Texture Toolkit / HaTT
+
+[Penn Haptic Texture Toolkit / HaTT](https://repository.upenn.edu/bitstreams/960863b6-df14-4770-9068-b1b2bf6a50f1/download) is a 100-surface collection of measured explorations and data-driven haptic models for recognition and virtual-texture rendering under attributed noncommercial research terms. It contains 10 kHz XML acceleration, force, position, and speed recordings plus surface images, models, and code, which the toolkit exposes through a bounded C3 local XML adapter while leaving unverified rendering packages untouched.
+
+#### Multimodal Tactile Texture Dataset (Mendeley Data)
+
+[Multimodal Tactile Texture Dataset](https://data.mendeley.com/datasets/n666tk4mw9/1) is a CC BY 4.0 pressure-and-IMU corpus for classifying 12 surfaces explored at the artifact-verified speeds of 30, 35, and 40 mm/s. It contains paired barometer and nine-axis IMU pickle trials, which the toolkit acquires only after explicit 3.83 GB confirmation and publisher SHA-256 verification and loads at C3 from an extracted trusted copy without duplicating derived axis files.
+
+#### Awesome-Touch
+
+[Awesome-Touch](https://github.com/linchangyi1/Awesome-Touch) is a popular community-maintained index that makes tactile sensors, research, software, datasets, hardware, products, and laboratories easier to discover. It contains Markdown links rather than tactile samples, which the toolkit exposes as a revision-pinned C2 `reference_index` record whose MIT license never overrides the independent terms of linked resources.
+
+### Dataset guides
+
+See the [FreeTacMan and FoTa guide](docs/datasets/freetacman-and-fota.md) for acquisition, validation, and runnable local examples.
+
+See the [Tac2Pose, MIT GelSight, and Touch100k guide](docs/datasets/tac2pose-gelsight-touch100k.md) for honest discovery records, noncommercial terms, local layout, validation, and a runnable Touch100k example.
+
+See the [TVL, TacBench, TacVerse, OAHD, and CLAMP guide](docs/datasets/tvl-tacbench-tacverse-oahd-clamp.md) for access boundaries, pinned releases, guarded serialization, local layouts, and runnable examples.
+
+See the [LMT, Penn HaTT, and Mendeley tactile textures guide](docs/datasets/lmt-hatt-mendeley.md) for release boundaries, licensing, guarded local loading, verified acquisition, layouts, and runnable examples.
+
+See the [published-data quickstart](docs/datasets/quickstart.md) for resource discovery, lawful acquisition boundaries, bounded validation, and a common install-to-first-sample workflow.
+
 ## Command line
 
 ```text
