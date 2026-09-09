@@ -25,6 +25,7 @@ class Modality(StrEnum):
     TEMPERATURE = "temperature"
     PRESSURE = "pressure"
     IMU = "imu"
+    ROBOT_ACTION = "robot_action"
     UNKNOWN = "unknown"
 
     @classmethod

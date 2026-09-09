@@ -5,6 +5,7 @@ Layout::
     /data                      attrs: total, schema_version, sensors, ...
     /data/demo_0               attrs: num_samples, schema_paths
     /data/demo_0/obs/<key>     (T, ...) datasets, key = schema path with '/' -> '_'
+    /data/demo_0/actions       (T, 7) canonical RT-X action when present
     /data/demo_0/timestamps    (T,) float64
     /stats/<key>/{mean,std,min,max}
 
@@ -81,6 +82,8 @@ class Hdf5Writer(BaseWriter):
         sample_shape = tuple(int(s) for s in sample.shape[1:])
         if key == S.TIMESTAMPS:
             parent, name = self._demo, "timestamps"
+        elif key == S.ACTION:
+            parent, name = self._demo, "actions"
         else:
             parent, name = self._demo["obs"], obs_key(key)
         chunk_t = self.chunk_frames
@@ -117,7 +120,11 @@ class Hdf5Writer(BaseWriter):
         assert self._demo is not None
         self._demo.attrs["num_samples"] = self.episode_frames
         self._demo.attrs["schema_paths"] = json.dumps(
-            {obs_key(k): k for k in self._datasets if k != S.TIMESTAMPS}
+            {
+                ("actions" if k == S.ACTION else obs_key(k)): k
+                for k in self._datasets
+                if k != S.TIMESTAMPS
+            }
         )
         self._episode_index += 1
 
@@ -155,6 +162,8 @@ class _SchemaView(Mapping[str, Any]):
         self._map: dict[str, h5py.Dataset] = {}
         if "timestamps" in demo:
             self._map[S.TIMESTAMPS] = demo["timestamps"]
+        if "actions" in demo:
+            self._map[S.ACTION] = demo["actions"]
         for name, ds in demo["obs"].items():
             self._map[str(ds.attrs.get("schema_path", f"/observation/{name}"))] = ds
         self.attrs = {"modalities": _load_modalities(demo.file["data"])}
@@ -196,6 +205,11 @@ def hdf5_summary(path: str | Path) -> dict[str, Any]:
         for name, g in f["data"].items():
             demos[name] = {
                 "num_samples": int(g.attrs.get("num_samples", 0)),
+                "actions": (
+                    {"shape": list(g["actions"].shape), "dtype": str(g["actions"].dtype)}
+                    if "actions" in g
+                    else None
+                ),
                 "obs": {
                     k: {"shape": list(v.shape), "dtype": str(v.dtype)} for k, v in g["obs"].items()
                 },

@@ -9,7 +9,7 @@ from tactile_toolkit.model import AssetReference, SampleKind, TactileObservation
 from tactile_toolkit.schema import SCHEMA, SCHEMA_VERSION, OpenTactileSchema, validate
 from tactile_toolkit.types import Modality, SensorMetadata, Stream, TactileChunk
 
-__version__ = "0.1.0"
+__version__ = "0.2.0"
 
 __all__ = [
     "SCHEMA",

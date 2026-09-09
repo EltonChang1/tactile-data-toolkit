@@ -4,13 +4,13 @@ build-backend = "hatchling.build"
 
 [project]
 name = "tactile-toolkit"
-version = "0.1.0"
+version = "0.2.0"
 description = "Universal ingestion, calibration, and standardized dataset engine for robotic tactile sensing."
 readme = "README.md"
 license = { text = "Apache-2.0" }
 requires-python = ">=3.11"
 authors = [{ name = "Tactile Data Toolkit contributors" }]
-keywords = ["robotics", "tactile", "gelsight", "dataset", "zarr", "hdf5", "lerobot"]
+keywords = ["robotics", "tactile", "gelsight", "dataset", "zarr", "hdf5", "lerobot", "open-x-embodiment", "rt-x"]
 classifiers = [
   "Development Status :: 3 - Alpha",
   "Intended Audience :: Science/Research",
@@ -36,6 +36,11 @@ dependencies = [
 
 [project.optional-dependencies]
 torch = ["torch>=2.1"]
+openx = [
+  "tensorflow>=2.15",
+  "tensorflow-datasets>=4.9",
+  "rlds>=0.1",
+]
 dev = [
   "pytest>=8",
   "pytest-cov>=5",

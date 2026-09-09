@@ -42,6 +42,7 @@ STATS_PATH = "meta/stats.json"
 
 SENSOR_TIMESTAMP_KEY = "observation.sensor_timestamp"
 DENSE_MAP_KEYS = (S.DEPTH_MAP, S.PRESSURE_MAP)
+IMAGE_KEYS = (S.RAW_IMAGE, S.WORKSPACE_IMAGE)
 
 
 def feature_key(schema_path: str) -> str:
@@ -49,6 +50,8 @@ def feature_key(schema_path: str) -> str:
     p = normalize_path(schema_path)
     if p == S.RAW_IMAGE:
         return "observation.images.tactile"
+    if p == S.WORKSPACE_IMAGE:
+        return "observation.images.workspace"
     return p.strip("/").replace("/", ".")
 
 
@@ -98,7 +101,9 @@ class LeRobotV3Writer(BaseWriter):
         self._episode_start_frame = 0
         self._episode_first_ts: float | None = None
         self._episode_stats: StatsCollector | None = None
-        self._global_stats = StatsCollector(image_keys={"observation.images.tactile"})
+        self._global_stats = StatsCollector(
+            image_keys={"observation.images.tactile", "observation.images.workspace"}
+        )
         self._tasks: dict[str, int] = {}
         self._video_start_s: dict[str, float] = {}
 
@@ -141,7 +146,7 @@ class LeRobotV3Writer(BaseWriter):
                 continue
             arr = np.asarray(arr)
             fkey = feature_key(key)
-            if key == S.RAW_IMAGE:
+            if key in IMAGE_KEYS:
                 self._video_keys[key] = fkey
                 H, W = arr.shape[1:3]
                 hf[fkey] = {
@@ -187,7 +192,9 @@ class LeRobotV3Writer(BaseWriter):
     def _begin_episode(self) -> None:
         self._episode_start_frame = self.frames_written
         self._episode_first_ts = None
-        self._episode_stats = StatsCollector(image_keys={"observation.images.tactile"})
+        self._episode_stats = StatsCollector(
+            image_keys={"observation.images.tactile", "observation.images.workspace"}
+        )
         for fkey in self._video_keys.values():
             enc = self._videos.get(fkey)
             self._video_start_s[fkey] = enc.duration_s if enc is not None else 0.0
@@ -225,7 +232,7 @@ class LeRobotV3Writer(BaseWriter):
                 continue
             arr = np.asarray(arr)
             fkey = feature_key(key)
-            if key == S.RAW_IMAGE:
+            if key in IMAGE_KEYS:
                 enc = self._videos.get(fkey)
                 if enc is None:
                     enc = VideoEncoder(

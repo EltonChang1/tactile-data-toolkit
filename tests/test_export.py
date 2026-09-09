@@ -101,6 +101,32 @@ def test_lerobot_v3_layout(tmp_out):
     assert videos
 
 
+def test_openx_fields_use_native_hdf5_and_lerobot_layouts(tmp_out):
+    chunk = _chunk(4, h=16, w=24)
+    chunk[S.WORKSPACE_IMAGE] = np.zeros((4, 20, 28, 3), dtype=np.uint8)
+    chunk[S.ACTION] = np.zeros((4, 7), dtype=np.float32)
+
+    hdf_path = tmp_out / "openx.h5"
+    hdf = Hdf5Writer(hdf_path)
+    hdf.begin_episode()
+    hdf.append(chunk)
+    hdf.end_episode()
+    hdf.finalize(_info())
+    view = schema_view(hdf_path)
+    assert view[S.ACTION].shape == (4, 7)
+
+    lerobot_path = tmp_out / "openx_lerobot"
+    lerobot = LeRobotV3Writer(lerobot_path, fps=3.0)
+    lerobot.begin_episode()
+    lerobot.append(chunk)
+    lerobot.end_episode()
+    lerobot.finalize(_info())
+    info = json.loads((lerobot_path / "meta" / "info.json").read_text())
+    assert info["features"]["observation.images.workspace"]["dtype"] == "video"
+    assert info["features"]["action"]["shape"] == [7]
+    assert (lerobot_path / "videos" / "observation.images.workspace").exists()
+
+
 def test_running_stats_match_numpy():
     rng = np.random.default_rng(1)
     x = rng.normal(size=(40, 3)).astype(np.float32)

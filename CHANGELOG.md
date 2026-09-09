@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.2.0
+
+- Add Open X-Embodiment RLDS episode adaptation with explicit dataset-specific transforms
+- Add canonical 7-DoF RT-X observation/action schema fields and episode markers
+- Add exact NumPy RT-1-X 11-token action codec and 15-step model-window preparation
+- Export workspace RGB as LeRobot video and canonical actions in native HDF5 layout
+
 ## 0.1.0
 
 Initial release.

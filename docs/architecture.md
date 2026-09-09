@@ -20,6 +20,19 @@ The toolkit is a streaming conversion engine: raw logs enter as typed message st
    - **HDF5** — robomimic `/data/demo_N/obs/<key>` with `schema_path` attributes
    - **LeRobot v3** — `meta/info.json`, `meta/stats.json`, Parquet tables, MP4 gel video via PyAV
 
+## Open X-Embodiment / RT-X bridge
+
+`OpenXEpisodeAdapter` consumes an RLDS episode and maps its primary workspace image, language
+conditioning, episode markers, and action into the shared trajectory container. Because Open
+X-Embodiment standardizes the episode envelope but not every contributing dataset's feature names,
+units, or gripper convention, dataset-specific normalization is an explicit `action_transform`.
+
+`RT1XWindowDataset` then constructs the released model's 15-step, initial-zero-padded history,
+resizes workspace RGB to 300×300, scales it to `[0, 1]`, and emits the exact 11 categorical action
+tokens used by the official JAX implementation. Optional tactile keys remain synchronized in a
+separate `tactile` mapping for multimodal policy research. The released RT-1-X checkpoint itself
+uses only workspace RGB and a 512-D language embedding.
+
 `ConvertPipeline` overlaps calibration of chunk *k+1* with compression of chunk *k* on a background thread so CPU-bound reconstruction and I/O-bound encoding run together.
 
 ## Memory bound

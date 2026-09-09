@@ -15,7 +15,7 @@ import numpy as np
 
 from tactile_toolkit.types import Modality, normalize_path
 
-SCHEMA_VERSION = "open-tactile-schema/0.1"
+SCHEMA_VERSION = "open-tactile-schema/0.2"
 
 Dim = str | int
 
@@ -53,8 +53,14 @@ POINT_CLOUD = "/observation/tactile/point_cloud"
 RAW_IMAGE = "/observation/tactile/raw_image"
 DEPTH_MAP = "/observation/tactile/depth_map"
 PRESSURE_MAP = "/observation/tactile/pressure_map"
+WORKSPACE_IMAGE = "/observation/image"
+LANGUAGE_EMBEDDING = "/observation/natural_language_embedding"
 WRENCH = "/observation/wrench"
 POSE = "/observation/pose"
+ACTION = "/action"
+IS_FIRST = "/is_first"
+IS_LAST = "/is_last"
+IS_TERMINAL = "/is_terminal"
 
 FIELDS: tuple[FieldSpec, ...] = (
     FieldSpec(
@@ -70,6 +76,7 @@ FIELDS: tuple[FieldSpec, ...] = (
         ("T", "N"),
         "binary",
         "Boolean mask indicating active contact per taxel/pixel element.",
+        modalities=(Modality.VISION_TACTILE, Modality.TAXEL),
     ),
     FieldSpec(
         NORMAL_FORCE,
@@ -77,6 +84,7 @@ FIELDS: tuple[FieldSpec, ...] = (
         ("T", "N"),
         "N",
         "Calculated or measured normal force (z-axis pressure) per element.",
+        modalities=(Modality.VISION_TACTILE, Modality.TAXEL),
     ),
     FieldSpec(
         SHEAR_FORCE,
@@ -84,6 +92,7 @@ FIELDS: tuple[FieldSpec, ...] = (
         ("T", "N", 2),
         "N",
         "Shear force vectors along the surface plane (fx, fy).",
+        modalities=(Modality.VISION_TACTILE, Modality.TAXEL),
     ),
     FieldSpec(
         POINT_CLOUD,
@@ -91,6 +100,7 @@ FIELDS: tuple[FieldSpec, ...] = (
         ("T", "N", 6),
         "m, N",
         "Spatial 3D points (x, y, z) with force components (fx, fy, fz).",
+        modalities=(Modality.VISION_TACTILE, Modality.TAXEL),
     ),
     FieldSpec(
         RAW_IMAGE,
@@ -119,6 +129,22 @@ FIELDS: tuple[FieldSpec, ...] = (
         modalities=(Modality.TAXEL,),
     ),
     FieldSpec(
+        WORKSPACE_IMAGE,
+        np.dtype("uint8"),
+        ("T", "OH", "OW", 3),
+        "RGB",
+        "Primary workspace RGB image used by Open X-Embodiment / RT-X policies.",
+        modalities=(Modality.VISION,),
+    ),
+    FieldSpec(
+        LANGUAGE_EMBEDDING,
+        np.dtype("float32"),
+        ("T", 512),
+        "embedding",
+        "Per-step 512-D language embedding used by the released RT-1-X model.",
+        required=False,
+    ),
+    FieldSpec(
         WRENCH,
         np.dtype("float32"),
         ("T", 6),
@@ -134,6 +160,38 @@ FIELDS: tuple[FieldSpec, ...] = (
         "End-effector pose (x, y, z, qx, qy, qz, qw).",
         required=False,
         modalities=(Modality.POSE,),
+    ),
+    FieldSpec(
+        ACTION,
+        np.dtype("float32"),
+        ("T", 7),
+        "mixed",
+        "Canonical RT-X action: (x, y, z, roll, pitch, yaw, gripper closedness).",
+        modalities=(Modality.ROBOT_ACTION,),
+    ),
+    FieldSpec(
+        IS_FIRST,
+        np.dtype("bool"),
+        ("T",),
+        "binary",
+        "RLDS marker indicating the first step in an episode.",
+        required=False,
+    ),
+    FieldSpec(
+        IS_LAST,
+        np.dtype("bool"),
+        ("T",),
+        "binary",
+        "RLDS marker indicating the final recorded step in an episode.",
+        required=False,
+    ),
+    FieldSpec(
+        IS_TERMINAL,
+        np.dtype("bool"),
+        ("T",),
+        "binary",
+        "RLDS marker distinguishing terminal episodes from truncated episodes.",
+        required=False,
     ),
 )
 

@@ -1,12 +1,14 @@
 # Tactile Data Toolkit
 
-Universal ingestion, calibration, and standardized dataset engine for robotic tactile sensing.
+Universal ingestion, calibration, and standardized dataset engine for robotic tactile sensing,
+with Open X-Embodiment / RT-1-X interoperability.
 
 Optical gel fingers, capacitive skins, and wrist force/torque sensors all record contact, but they do it in incompatible file formats and coordinate frames. This package reads those raw logs, time-aligns them, applies sensor-specific calibration, and writes a single **Open-Tactile-Schema** trajectory that loads in Zarr, HDF5 (robomimic / ACT), LeRobot v3, and PyTorch.
 
 | Input | Modalities | Output |
 | --- | --- | --- |
 | ROS 2 / MCAP, ROS 1 `.bag`, CSV / NPY / NPZ | Vision-tactile (GelSight-class), taxel arrays, 6-axis wrench | Zarr, HDF5, LeRobot v3 (Parquet + MP4) |
+| Open X-Embodiment RLDS / TFDS | Workspace RGB, language, canonical 7-DoF actions, optional synchronized touch | Open-Tactile-Schema trajectories and RT-1-X windows/tokens |
 
 ## Install
 
@@ -23,6 +25,8 @@ pip install -e ".[dev]"
 ```
 
 PyTorch is optional. Install the `torch` extra (or `dev`) when you want `TactileZarrDataset` and `DataLoader` streaming.
+Install the `openx` extra only when loading official RLDS builders directly; the NumPy adapters do
+not require TensorFlow.
 
 ## Quickstart
 
@@ -55,6 +59,24 @@ loader = make_dataloader(dataset, batch_size=16, num_workers=2)
 batch = next(iter(loader))
 ```
 
+Adapt an already standardized Open X-Embodiment episode and prepare the released RT-1-X model
+interface:
+
+```python
+from tactile_toolkit.dataset import OpenXEpisodeAdapter, RT1XWindowDataset
+
+episode = OpenXEpisodeAdapter().adapt(raw_rlds_episode)
+sample = RT1XWindowDataset(episode)[-1]
+
+sample["observation"]["image"].shape                 # (15, 300, 300, 3)
+sample["observation"]["natural_language_embedding"].shape  # (15, 512)
+sample["action_tokens"].shape                        # (15, 11)
+```
+
+Open X contributors use heterogeneous action fields and units, so datasets that have not already
+been standardized need an `OpenXConfig.action_transform`. See
+[docs/openx-rtx.md](docs/openx-rtx.md) for the compatibility boundary and checkpoint workflow.
+
 ## Open-Tactile-Schema
 
 Every export uses the same hierarchical keys, regardless of source hardware. See [docs/schema.md](docs/schema.md) for units, optional fields, and the validator.
@@ -68,6 +90,9 @@ Every export uses the same hierarchical keys, regardless of source hardware. See
 | `/observation/tactile/point_cloud` | float32 | `(T, N, 6)` | `(x, y, z, fx, fy, fz)` |
 | `/observation/tactile/raw_image` | uint8 | `(T, H, W, 3)` | Gel camera (vision-tactile) |
 | `/observation/wrench` | float32 | `(T, 6)` | Wrist wrench when present |
+| `/observation/image` | uint8 | `(T, OH, OW, 3)` | Primary RT-X workspace camera |
+| `/observation/natural_language_embedding` | float32 | `(T, 512)` | RT-1-X language conditioning |
+| `/action` | float32 | `(T, 7)` | `(x, y, z, roll, pitch, yaw, gripper)` |
 
 ## Pipeline
 
