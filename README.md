@@ -79,7 +79,7 @@ been standardized need an `OpenXConfig.action_transform`. See
 
 ## Open-Tactile-Schema
 
-Every export uses the same hierarchical keys, regardless of source hardware. See [docs/schema.md](docs/schema.md) for units, optional fields, and the validator.
+All export uses the same hierarchical keys, regardless of source hardware. See [docs/schema.md](docs/schema.md) for units, optional fields, and the validator.
 
 | Path | Type | Shape | Meaning |
 | --- | --- | --- | --- |
